@@ -1,3 +1,5 @@
+import { RestaurantId } from "@models";
+
 export default interface RestaurantSummary {
     id: RestaurantId;
     name: string | null;
@@ -8,4 +10,3 @@ export default interface RestaurantSummary {
     is_open_now: boolean | null;
 }
 
-export type RestaurantId = string;

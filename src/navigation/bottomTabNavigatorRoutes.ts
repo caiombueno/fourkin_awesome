@@ -1,6 +1,5 @@
-import HomeScreen from "@features/restaurant-search/screens/HomeScreen";
-import FavoriteRestaurantsScreen from "@features/favorite-restaurants/screens/FavoriteRestaurantsScreen";
-import AccountScreen from "@features/authentication/screens/AccountScreen";
+
+import { AccountScreen, FavoriteRestaurantsScreen, HomeScreen } from "@features";
 import { ComponentType } from "react";
 
 enum IoniconNames {

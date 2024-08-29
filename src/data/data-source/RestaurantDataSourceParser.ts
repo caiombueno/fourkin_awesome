@@ -1,5 +1,4 @@
-import { DataFormatFailureError } from "@models/errors/DataSourceError";
-import RestaurantSummary, { RestaurantId } from "@models/RestaurantSummary";
+import { RestaurantSummary, RestaurantId, DataFormatFailureError } from "@models";
 
 export default class RestaurantDataSourceParser {
     public static parseRestaurantSummaryList = (rawData: RestaurantSummaryRawData[]): RestaurantSummary[] => {

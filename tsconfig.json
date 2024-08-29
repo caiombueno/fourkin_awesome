@@ -4,20 +4,23 @@
     "strict": true,
     "baseUrl": "./src",
     "paths": {
-      "@data/*": [
-        "data/*"
+      "@data": [
+        "data"
       ],
-      "@features/*": [
-        "features/*"
+      "@features": [
+        "features"
       ],
       "@shared/*": [
-        "shared/*"
+        "shared"
       ],
-      "@navigation/*": [
-        "navigation/*"
+      "@navigation": [
+        "navigation"
       ],
-      "@models/*": [
-        "models/*"
+      "@models": [
+        "models"
+      ],
+      "@redux": [
+        "redux"
       ]
     },
   },

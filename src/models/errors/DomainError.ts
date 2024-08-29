@@ -1,4 +1,4 @@
-abstract class DomainError extends Error {
+export default abstract class DomainError extends Error {
 
 }
 

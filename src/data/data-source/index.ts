@@ -1,3 +1,1 @@
-import restaurantDataSource from "./RestaurantDataSource";
-
-export { restaurantDataSource };
+export * from './RestaurantDataSource';

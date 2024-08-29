@@ -1,9 +1,8 @@
 import { ApolloQueryResult, NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
-import RestaurantSummary from 'models/RestaurantSummary';
-import queries from './queries';
 import Constants from 'expo-constants';
-import { ServerCommunicationFailureError, DataFormatFailureError, EmptyResultError } from '@models/errors/DataSourceError';
+import { ServerCommunicationFailureError, EmptyResultError, RestaurantSummary } from '@models';
+import queries from './queries';
 import RestaurantDataSourceParser, { RestaurantSummaryRawData } from './RestaurantDataSourceParser';
 
 interface RestaurantSummaryListData {
@@ -30,7 +29,7 @@ class RestaurantDataSource {
     });
   }
 
-  async fetchRestaurantSummaryList(location: string, limit: number, offset: number): Promise<RestaurantSummary[]> {
+  async getRestaurantSummaryList(location: string, limit: number, offset: number): Promise<RestaurantSummary[]> {
     try {
       const result: ApolloQueryResult<RestaurantSummaryListData> = await this.client.query({
         query: queries.getRestaurantSummaryList,
@@ -55,6 +54,6 @@ class RestaurantDataSource {
   }
 }
 
-const restaurantDataSource = new RestaurantDataSource();
-export default restaurantDataSource;
+export const restaurantDataSource = new RestaurantDataSource();
+export default RestaurantDataSource;
 

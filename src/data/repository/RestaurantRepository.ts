@@ -1,12 +1,10 @@
-import { restaurantDataSource } from "@data/data-source";
-import DataSourceError, { EmptyResultError } from "@models/errors/DataSourceError";
-import { NoRestaurantSummaryListFoundError, RestaurantSummaryListFetchFailureError } from "@models/errors/DomainError";
-import RestaurantSummary from "@models/RestaurantSummary";
+import { restaurantDataSource } from "../data-source";
+import { RestaurantSummary, NoRestaurantSummaryListFoundError, RestaurantSummaryListFetchFailureError, EmptyResultError, DataSourceError } from "@models";
 
-export default class RestaurantRepository {
-    async fetchRestaurantSummaryList(location: string, limit: number, offset: number): Promise<RestaurantSummary[]> {
+class RestaurantRepository {
+    async getRestaurantSummaryList(location: string, limit: number, offset: number): Promise<RestaurantSummary[]> {
         try {
-            const restaurantSummaries = await restaurantDataSource.fetchRestaurantSummaryList(location, limit, offset);
+            const restaurantSummaries = await restaurantDataSource.getRestaurantSummaryList(location, limit, offset);
 
             return restaurantSummaries;
         } catch (error) {
@@ -19,4 +17,7 @@ export default class RestaurantRepository {
     }
 }
 
-export const restaurantRepository = new RestaurantRepository();
+const restaurantRepository = new RestaurantRepository();
+
+export default RestaurantRepository;
+export { restaurantRepository };
