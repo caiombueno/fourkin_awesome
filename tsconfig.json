@@ -4,6 +4,9 @@
     "strict": true,
     "baseUrl": "./src",
     "paths": {
+      "@data/*": [
+        "data/*"
+      ],
       "@features/*": [
         "features/*"
       ],
@@ -12,7 +15,14 @@
       ],
       "@navigation/*": [
         "navigation/*"
+      ],
+      "@models/*": [
+        "models/*"
       ]
-    }
+    },
   },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
