@@ -1,4 +1,4 @@
-import RestaurantSummary from "@models/RestaurantSummary";
+import { RestaurantSummary } from "@models";
 
 export default interface RestaurantSummaryListState {
     loading: boolean;

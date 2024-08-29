@@ -10,8 +10,8 @@
       "@features": [
         "features"
       ],
-      "@shared/*": [
-        "shared"
+      "@components": [
+        "components"
       ],
       "@navigation": [
         "navigation"
