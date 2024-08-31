@@ -1,4 +1,4 @@
-import { ScrollView } from "react-native";
+import { ScrollView, StyleProp, View, ViewStyle } from "react-native";
 import { RestaurantCard } from "./RestaurantCard";
 import { RestaurantSummary } from "@models";
 import { Text } from 'react-native';
@@ -12,11 +12,13 @@ import { getRestaurantSummaryList, RestaurantSummaryListState, selectRestaurantS
 const RestaurantCardListView: React.FC<{
     location?: string,
     limit?: number,
-    offset?: number
+    offset?: number,
+    style?: StyleProp<ViewStyle>
 }> = ({
     location = 'Brazil',
     limit = 10,
-    offset = 0
+    offset = 0,
+    style
 }) => {
         const dispatch: AppDispatch = useDispatch();
         const { loading, data, error }: RestaurantSummaryListState = selectRestaurantSummaryList();
@@ -29,11 +31,12 @@ const RestaurantCardListView: React.FC<{
         if (error) return <Text>Error: {error}</Text>;
 
         return (
-            <ScrollView contentContainerStyle={{ padding: 10 }}>
+
+            <View style={style}>
                 {data.map((restaurantSummary: RestaurantSummary) => (
                     <RestaurantCard key={restaurantSummary.id} restaurant={restaurantSummary} />
                 ))}
-            </ScrollView>
+            </View>
 
         );
     };
