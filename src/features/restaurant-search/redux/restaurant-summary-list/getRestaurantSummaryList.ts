@@ -6,9 +6,11 @@ const getRestaurantSummaryList = createAsyncThunk(
     'restaurants/getRestaurantSummaryList',
     async ({ location, offset, limit }: { location: string, offset: number, limit: number }): Promise<RestaurantSummary[]> => {
         try {
-            const response = await restaurantRepository.getRestaurantSummaryList(location, limit, offset);
+            const response = await restaurantRepository.getRestaurantSummaryList({ location, limit, offset });
             return response;
         } catch (error) {
+            if (error instanceof Error)
+                console.log(error.message);
             throw error;
         }
     }

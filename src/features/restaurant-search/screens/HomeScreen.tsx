@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { SafeAreaView, Text, StyleSheet, View, ScrollView } from 'react-native';
 import { EmptyLocationIndicator, RestaurantCardListView, TextField } from '../components';
-import { selectLocationSearchInput, selectNameSearchInput, setLocationInput, setNameInput } from '../redux';
+import { selectLocationSearchInput, setLocationInput, setNameInput } from '../redux';
 import { useDispatch } from 'react-redux';
 import { LocationPermissionStatus, LocationService } from '../services';
 
 
 const HomeScreen: React.FC = () => {
     const location = selectLocationSearchInput();
-    const name = selectNameSearchInput();
     const dispatch = useDispatch();
 
     const getLocation = async () => {
@@ -34,11 +33,6 @@ const HomeScreen: React.FC = () => {
                             value={location}
                             onChangeText={(location) => dispatch(setLocationInput(location))}
                             placeholder="Enter location"
-                        />
-                        <TextField
-                            value={name}
-                            onChangeText={(name) => dispatch(setNameInput(name))}
-                            placeholder="Enter name"
                         />
                     </View>
                 </View>

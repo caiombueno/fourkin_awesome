@@ -1,7 +1,7 @@
-import { ApolloQueryResult, NormalizedCacheObject } from '@apollo/client';
+import { ApolloError, ApolloQueryResult, ErrorPolicy, NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import Constants from 'expo-constants';
-import { ServerCommunicationFailureError, EmptyResultError, RestaurantSummary } from '@models';
+import { DataSourceRequestError, EmptyResultError, RestaurantSummary } from '@models';
 import queries from './queries';
 import RestaurantDataSourceParser, { RestaurantSummaryRawData } from './RestaurantDataSourceParser';
 
@@ -29,28 +29,28 @@ class RestaurantDataSource {
     });
   }
 
-  async getRestaurantSummaryList(location: string, limit: number, offset: number): Promise<RestaurantSummary[]> {
-    try {
-      const result: ApolloQueryResult<RestaurantSummaryListData> = await this.client.query({
-        query: queries.getRestaurantSummaryList,
-        variables: { location, limit, offset },
-      });
+  async getRestaurantSummaryList({ location, limit, offset }: { location: string, limit: number, offset: number }): Promise<RestaurantSummary[]> {
 
-      if (result.error || (result.errors && result.errors.length > 0)) {
-        throw new ServerCommunicationFailureError();
-      }
-      if (!result.data) throw new EmptyResultError();
+    const result: ApolloQueryResult<RestaurantSummaryListData> = await this.client.query({
+      query: queries.getRestaurantSummaryList,
+      variables: { location, limit, offset },
+    }).catch((error) => {
+      const message = (error instanceof ApolloError) ? error.message : null;
+      throw new DataSourceRequestError(message)
+    });
 
-
-      const restaurantSummaryRawData: RestaurantSummaryRawData[] = result.data.search.business;
-
-      const restaurantSummaries: RestaurantSummary[] = RestaurantDataSourceParser.parseRestaurantSummaryList(restaurantSummaryRawData);
-
-      return restaurantSummaries;
-    } catch (error) {
-      console.error('Failed to fetch restaurants:', error);
-      throw new ServerCommunicationFailureError();
+    if (result.error || (result.errors && result.errors.length > 0)) {
+      throw new DataSourceRequestError();
     }
+    if (!result.data) throw new EmptyResultError();
+
+
+    const restaurantSummaryRawData: RestaurantSummaryRawData[] = result.data.search.business;
+
+    const restaurantSummaries: RestaurantSummary[] = RestaurantDataSourceParser.parseRestaurantSummaryList(restaurantSummaryRawData);
+
+    return restaurantSummaries;
+
   }
 }
 

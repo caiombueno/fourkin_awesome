@@ -9,10 +9,12 @@ export default abstract class DataSourceError extends Error {
 }
 
 
-export class ServerCommunicationFailureError extends DataSourceError {
-    constructor(originalError?: any) {
-        super(originalError);
-        this.name = 'ServerCommunicationFailureError';
+export class DataSourceRequestError extends DataSourceError {
+    public customMessage: string | null | undefined;
+    constructor(message?: string | null) {
+        super();
+        this.name = 'DataSourceRequestError';
+        this.customMessage = message;
     }
 }
 

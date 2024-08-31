@@ -1,4 +1,4 @@
-import { ScrollView, StyleProp, View, ViewStyle } from "react-native";
+import { ActivityIndicator, StyleProp, View, ViewStyle } from "react-native";
 import { RestaurantCard } from "./RestaurantCard";
 import { RestaurantSummary } from "@models";
 import { Text } from 'react-native';
@@ -7,15 +7,13 @@ import { AppDispatch } from "@redux";
 import { useDispatch } from "react-redux";
 import { getRestaurantSummaryList, RestaurantSummaryListState, selectRestaurantSummaryList } from "../../redux";
 
-
-
 const RestaurantCardListView: React.FC<{
-    location?: string,
+    location: string,
     limit?: number,
     offset?: number,
     style?: StyleProp<ViewStyle>
 }> = ({
-    location = 'Brazil',
+    location,
     limit = 10,
     offset = 0,
     style
@@ -27,8 +25,8 @@ const RestaurantCardListView: React.FC<{
             dispatch(getRestaurantSummaryList({ location: location, limit: limit, offset: offset }));
         }, [dispatch]);
 
-        if (loading) return <Text>Loading...</Text>;
-        if (error) return <Text>Error: {error}</Text>;
+        if (loading) return <LoadingIndicator />;
+        if (error) return <ErrorIndicator error={error} />
 
         return (
 
@@ -40,5 +38,21 @@ const RestaurantCardListView: React.FC<{
 
         );
     };
+
+
+const LoadingIndicator: React.FC = () => (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator />
+        <Text>Loading restaurants...</Text>
+    </View>
+);
+
+const ErrorIndicator: React.FC<{ error: string, }> = ({ error, }) => (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ color: 'red', marginBottom: 10 }}>Something went wrong:</Text>
+        <Text style={{ color: 'red', marginBottom: 20 }}>{error}</Text>
+    </View>
+);
+
 
 export default RestaurantCardListView;

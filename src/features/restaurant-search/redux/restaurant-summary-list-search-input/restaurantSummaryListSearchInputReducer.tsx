@@ -2,12 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface RestaurantSummaryListSearchInputState {
     location: string;
-    name: string;
 }
 
 const initialState: RestaurantSummaryListSearchInputState = {
     location: '',
-    name: '',
 };
 
 const restaurantSummaryListSearchInputSlice = createSlice({
@@ -17,13 +15,10 @@ const restaurantSummaryListSearchInputSlice = createSlice({
         setLocationInput: (state, action: PayloadAction<string>) => {
             state.location = action.payload;
         },
-        setNameInput: (state, action: PayloadAction<string>) => {
-            state.name = action.payload;
-        },
     },
 });
 
-export const { setLocationInput, setNameInput } = restaurantSummaryListSearchInputSlice.actions;
+export const { setLocationInput } = restaurantSummaryListSearchInputSlice.actions;
 
 const restaurantSummaryListSearchInputReducer = restaurantSummaryListSearchInputSlice.reducer;
 
