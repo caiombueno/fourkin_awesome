@@ -1,29 +1,28 @@
-import React, { ComponentType } from "react";
+import { ComponentType, FunctionComponent } from "react";
 import { AppRoute } from "../models";
-
-import { View, Text } from "react-native";
 import { BottomTabNavigator } from "../components";
+import { RestaurantDetailsScreen } from "@features";
+import { RestaurantId } from "@models";
 
-const RestaurantDetailsScreen = () => {
-    return (<View>
-        <Text>Restaurant Details </Text>
-    </View>);
-};
 
 type RootStackParamList = {
     BottomTabs: undefined;
-    RestaurantDetails: undefined; // Define the parameters for RestaurantDetailsScreen
+    RestaurantDetails: { restaurantId: RestaurantId, restaurantImageUrl?: string }; // Define the parameters for RestaurantDetailsScreen
 };
 
 interface RootAppRoute extends AppRoute {
     name: keyof RootStackParamList;
-    screen: ComponentType;
+    screen: ComponentType<any>;
 }
 
 interface RootAppRoutes {
     bottomTabs: RootAppRoute;
     restaurantDetails: RootAppRoute;
 }
+
+const RestaurantDetailsScreenWrapper: ComponentType<{ route: { params: { restaurantId: string, restaurantImageUrl?: string } } }> = ({ route }) => {
+    return <RestaurantDetailsScreen restaurantId={route.params.restaurantId} restaurantImageUrl={route.params.restaurantImageUrl} />;
+};
 
 const rootRoutes: RootAppRoutes = {
     bottomTabs: {
@@ -32,7 +31,7 @@ const rootRoutes: RootAppRoutes = {
     },
     restaurantDetails: {
         name: 'RestaurantDetails',
-        screen: RestaurantDetailsScreen,
+        screen: RestaurantDetailsScreenWrapper,
     }
 }
 

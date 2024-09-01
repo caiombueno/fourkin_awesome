@@ -1,9 +1,28 @@
-import { Image, StyleSheet } from 'react-native';
 
-const RestaurantCardImage: React.FC<{ uri: string }> = ({ uri }) => <Image
-    source={{ uri: uri }}
-    style={styles.image}
-/>
+import Animated from 'react-native-reanimated';
+import { customTransition } from 'transition';
+import { Image, StyleSheet } from 'react-native';
+import { SharedElement } from 'react-navigation-shared-element';
+
+// Extending FC to include sharedElements
+interface RestaurantCardImageProps {
+    uri: string;
+}
+
+const RestaurantCardImage: React.FC<RestaurantCardImageProps> = ({ uri }) => {
+    console.log('uri', uri);
+    return (
+        <SharedElement id={uri}>
+            <Image
+                source={{ uri: uri }}
+                style={styles.image}
+
+            />
+        </SharedElement >
+
+    );
+}
+
 
 export default RestaurantCardImage;
 

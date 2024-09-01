@@ -5,10 +5,10 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { rootRoutes, RootStackParamList } from '@navigation';
+import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createSharedElementStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
   return (
@@ -24,7 +24,18 @@ const App: React.FC = () => {
             <Stack.Screen
               name={rootRoutes.restaurantDetails.name}
               component={rootRoutes.restaurantDetails.screen}
-              options={{ title: 'Restaurant Details' }}
+              sharedElements={(route, otherRoute, showing) => {
+                const { restaurantImageUrl } = route.params;
+                return [restaurantImageUrl];
+              }}
+
+              options={{
+                title: '',
+                headerBackTitleVisible: false,
+
+
+
+              }}
             />
           </Stack.Navigator>
           <StatusBar style="auto" />
