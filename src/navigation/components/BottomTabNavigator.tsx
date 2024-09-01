@@ -1,9 +1,11 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from '@expo/vector-icons';
 import React from "react";
-import bottomTabNavigatorRoutes from "./bottomTabNavigatorRoutes";
+import bottomTabRoutes, { BottomTabParamList, BottomTabRoute } from "../routes/bottomTabRoutes";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<BottomTabParamList>();
+
+const bottomTabRoutesValues = Object.values(bottomTabRoutes) as BottomTabRoute[];
 
 const BottomTabNavigator = () => {
     return (
@@ -17,13 +19,21 @@ const BottomTabNavigator = () => {
                 headerShown: false,
             })}
         >
-            {bottomTabNavigatorRoutes.map((route) => <Tab.Screen key={route.name} name={route.name} component={route.component} />)}
+            {
+                bottomTabRoutesValues.map((route) =>
+                    <Tab.Screen
+                        key={route.name}
+                        name={route.name}
+                        component={route.screen}
+                    />
+                )
+            }
         </Tab.Navigator>
     );
 };
 
 const getRouteFromName = (name: string) => {
-    const route = bottomTabNavigatorRoutes.find((route) => route.name === name);
+    const route = bottomTabRoutesValues.find((route) => route.name === name);
     if (!route) {
         throw new Error(`Route with name ${name} not found`);
     }

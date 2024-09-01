@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { SafeAreaView, Text, StyleSheet, View, ScrollView } from 'react-native';
 import { EmptyLocationIndicator, RestaurantCardListView, TextField } from '../components';
-import { selectLocationSearchInput, setLocationInput, setNameInput } from '../redux';
+import { selectLocationSearchInput, setLocationInput } from '../redux';
 import { useDispatch } from 'react-redux';
 import { LocationPermissionStatus, LocationService } from '../services';
 

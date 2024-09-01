@@ -1,22 +1,41 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { RestaurantSummary } from '@models';
 import { Row } from '@components';
 import RestaurantCardImage from './RestaurantCardImage';
 import { RestaurantCardInfoView } from './RestaurantCardInfoView';
+import { RootStackParamList } from '@navigation';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+
+
+
+type RestaurantDetailsNavigationProp = StackNavigationProp<RootStackParamList, 'RestaurantDetails'>;
+
+const useNavigateToRestaurantDetails = () => {
+    const navigation = useNavigation<RestaurantDetailsNavigationProp>();
+
+    return () =>
+        navigation.navigate('RestaurantDetails');
+
+};
 
 const RestaurantCard: React.FC<{ restaurant: RestaurantSummary }> = ({ restaurant }) => {
+    const navigateToRestaurantDetails = useNavigateToRestaurantDetails;
+
     return (
-        <Row style={styles.card}>
-            <RestaurantCardImage uri={restaurant.photos[0]} />
-            <RestaurantCardInfoView
-                name={restaurant.name}
-                price={restaurant.price}
-                isOpenNow={restaurant.isOpenNow}
-                rating={restaurant.rating}
-                categories={restaurant.categories}
-            />
-        </Row>
+        <TouchableOpacity onPress={navigateToRestaurantDetails()}>
+            <Row style={styles.card}>
+                <RestaurantCardImage uri={restaurant.photos[0]} />
+                <RestaurantCardInfoView
+                    name={restaurant.name}
+                    price={restaurant.price}
+                    isOpenNow={restaurant.isOpenNow}
+                    rating={restaurant.rating}
+                    categories={restaurant.categories}
+                />
+            </Row>
+        </TouchableOpacity>
     );
 };
 

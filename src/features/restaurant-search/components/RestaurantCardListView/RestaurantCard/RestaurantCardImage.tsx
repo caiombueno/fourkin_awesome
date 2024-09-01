@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 
 const RestaurantCardImage: React.FC<{ uri: string }> = ({ uri }) => <Image
     source={{ uri: uri }}

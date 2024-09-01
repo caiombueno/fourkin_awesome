@@ -1,1 +1,4 @@
-export { default as BottomTabNavigator } from './BottomTabNavigator';
+export * from './components';
+export * from './hooks';
+export * from './models';
+export * from './routes';  
