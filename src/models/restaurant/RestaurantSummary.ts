@@ -7,6 +7,6 @@ export default interface RestaurantSummary {
     rating: number | null;
     photos: string[];
     categories: { title: string | null }[];
-    is_open_now: boolean | null;
+    isOpenNow: boolean | null;
 }
 

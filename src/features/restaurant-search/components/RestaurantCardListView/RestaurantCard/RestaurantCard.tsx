@@ -12,7 +12,7 @@ const RestaurantCard: React.FC<{ restaurant: RestaurantSummary }> = ({ restauran
             <RestaurantCardInfoView
                 name={restaurant.name}
                 price={restaurant.price}
-                isOpenNow={restaurant.is_open_now}
+                isOpenNow={restaurant.isOpenNow}
                 rating={restaurant.rating}
                 categories={restaurant.categories}
             />
