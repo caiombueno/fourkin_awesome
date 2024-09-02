@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { restaurantSummaryListReducer, restaurantSummaryListSearchInputReducer } from '@features';
+import { restaurantDetailsReducer } from 'features/restaurant-details/redux/restaurantDetailsReducer';
 
 
 const loggerMiddleware = (store: any) => (next: any) => (action: any) => {
@@ -13,6 +14,7 @@ const store = configureStore({
     reducer: {
         restaurantSummaryList: restaurantSummaryListReducer,
         restaurantSummaryListSearchInput: restaurantSummaryListSearchInputReducer,
+        restaurantDetails: restaurantDetailsReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(loggerMiddleware),
