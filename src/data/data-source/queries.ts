@@ -21,12 +21,45 @@ const GET_RESTAURANT_SUMMARY_LIST_QUERY: DocumentNode = gql`
   }
 `;
 
+const GET_RESTAURANT_DETAILS_QUERY: DocumentNode = gql`
+query GetRestaurantDetails($id: String) {
+        business(id: $id) {
+          id
+          name
+          price
+          rating
+          reviews {
+            id
+            rating
+            text
+            user {
+              id
+              image_url
+              name
+            }
+          }
+          categories {
+            title
+            alias
+          }
+          hours {
+            is_open_now
+          }
+          location {
+            formatted_address
+          }
+        }
+      }
+`;
+
 interface RestaurantDataSourceQueryDocuments {
   getRestaurantSummaryList: DocumentNode;
+  getRestaurantDetails: DocumentNode;
 };
 
 const queries: RestaurantDataSourceQueryDocuments = {
   getRestaurantSummaryList: GET_RESTAURANT_SUMMARY_LIST_QUERY,
+  getRestaurantDetails: GET_RESTAURANT_DETAILS_QUERY,
 };
 
 export default queries;

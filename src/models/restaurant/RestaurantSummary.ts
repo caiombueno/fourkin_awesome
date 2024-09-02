@@ -1,4 +1,5 @@
 import { RestaurantId } from "@models";
+import Category from "./Category";
 
 export default interface RestaurantSummary {
     id: RestaurantId;
@@ -6,7 +7,7 @@ export default interface RestaurantSummary {
     price: string | null;
     rating: number | null;
     photos: string[];
-    categories: { title: string | null }[];
+    categories: Category[];
     isOpenNow: boolean | null;
 }
 

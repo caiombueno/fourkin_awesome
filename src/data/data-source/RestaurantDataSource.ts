@@ -1,9 +1,9 @@
 import { ApolloError, ApolloQueryResult, ErrorPolicy, NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import Constants from 'expo-constants';
-import { DataSourceRequestError, EmptyResultError, RestaurantSummary } from '@models';
+import { DataSourceRequestError, EmptyResultError, RestaurantDetails, RestaurantId, RestaurantSummary } from '@models';
 import queries from './queries';
-import RestaurantDataSourceParser, { RestaurantSummaryRawData } from './RestaurantDataSourceParser';
+import RestaurantDataSourceParser, { RestaurantDetailsRawData, RestaurantSummaryRawData } from './RestaurantDataSourceParser';
 
 interface RestaurantSummaryListData {
   search: {
@@ -50,6 +50,30 @@ class RestaurantDataSource {
     const restaurantSummaries: RestaurantSummary[] = RestaurantDataSourceParser.parseRestaurantSummaryList(restaurantSummaryRawData);
 
     return restaurantSummaries;
+
+  }
+
+  async getRestaurantDetails({ id }: { id: RestaurantId }): Promise<RestaurantDetails> {
+
+    const result: ApolloQueryResult<RestaurantDetailsRawData> = await this.client.query({
+      query: queries.getRestaurantDetails,
+      variables: { id },
+    }).catch((error) => {
+      const message = (error instanceof ApolloError) ? error.message : null;
+      throw new DataSourceRequestError(message)
+    });
+
+    if (result.error || (result.errors && result.errors.length > 0)) {
+      throw new DataSourceRequestError();
+    }
+    if (!result.data) throw new EmptyResultError();
+
+
+    const restaurantDetailsRawData: RestaurantDetailsRawData = result.data;
+
+    const restaurantDetails: RestaurantDetails = RestaurantDataSourceParser.parseRestaurantDetails(restaurantDetailsRawData);
+
+    return restaurantDetails;
 
   }
 }
