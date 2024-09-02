@@ -1,14 +1,14 @@
 import { DataFormatFailureError } from "../errors";
-import ReviewUser from "./ReviewUser";
+import ReviewUser, { ReviewUserSerializable } from "./ReviewUser";
 
 class Review {
-    readonly id: string;
+    readonly id: ReviewId;
     readonly rating: number;
     readonly text: string;
     readonly user: ReviewUser;
 
     constructor({ id, rating, text, user }: {
-        id: string;
+        id: ReviewId;
         rating: number;
         text: string;
         user: ReviewUser;
@@ -21,20 +21,38 @@ class Review {
         Object.freeze(this);
     }
 
+    toSerializable(): ReviewSerializable {
+        return {
+            id: this.id,
+            rating: this.rating,
+            text: this.text,
+            user: this.user.toSerializable(),
+        };
+    }
+
     static fromJson(json: ReviewJson): Review {
         const reviewUser: ReviewUser = ReviewUser.fromJson(json.user);
 
         const reviewId = json.id;
         if (!reviewId) throw new DataFormatFailureError();
 
-        const review: Review = {
+        const review: Review = new Review({
             id: reviewId,
             rating: json.rating,
             text: json.text,
             user: reviewUser,
-        };
+        });
         return review;
     }
+}
+
+type ReviewId = string;
+
+export interface ReviewSerializable {
+    id: ReviewId;
+    rating: number;
+    text: string;
+    user: ReviewUserSerializable;
 }
 
 export interface ReviewJson {

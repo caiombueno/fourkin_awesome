@@ -20,6 +20,14 @@ class ReviewUser {
         Object.freeze(this);
     }
 
+    toSerializable(): ReviewUserSerializable {
+        return {
+            id: this.id,
+            imageUrl: this.imageUrl,
+            name: this.name,
+        };
+    }
+
     static fromJson(json: ReviewUserJson): ReviewUser {
 
         const id = json.id;
@@ -32,6 +40,12 @@ class ReviewUser {
             { id, imageUrl, name }
         );
     }
+}
+
+export interface ReviewUserSerializable {
+    id: UserId;
+    imageUrl: string | null;
+    name: string | null;
 }
 
 export type UserId = string;

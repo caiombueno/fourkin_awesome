@@ -1,24 +1,7 @@
 import { DataFormatFailureError } from "../errors";
 import Category from "./Category";
 import RestaurantId from "./RestaurantId";
-import Review, { ReviewJson } from "./Review";
-
-export interface RestaurantDetailsJson {
-    business: {
-        id: string;
-        name: string | null;
-        price: string | null;
-        rating: number | null;
-        photos: string[] | null;
-        categories: {
-            title: string | null;
-            alias: string | null;
-        }[] | null;
-        hours: { is_open_now: boolean | null }[] | null;
-        reviews: ReviewJson[] | null;
-        location: { formatted_address: string | null } | null;
-    }
-}
+import Review, { ReviewJson, ReviewSerializable } from "./Review";
 
 class RestaurantDetails {
     readonly id: RestaurantId;
@@ -64,6 +47,19 @@ class RestaurantDetails {
         Object.freeze(this);
     }
 
+    toSerializable(): RestaurantDetailsSerializable {
+        return {
+            id: this.id.toString(),
+            name: this.name,
+            price: this.price,
+            rating: this.rating,
+            categories: this.categories.map(category => ({ title: category.title })),
+            isOpenNow: this.isOpenNow,
+            reviews: this.reviews.map(review => review.toSerializable()),
+            address: this.address
+        };
+    }
+
     static fromJson(json: RestaurantDetailsJson): RestaurantDetails {
         try {
             const {
@@ -99,6 +95,34 @@ class RestaurantDetails {
             throw new DataFormatFailureError();
         }
     }
+}
+
+export interface RestaurantDetailsJson {
+    business: {
+        id: string;
+        name: string | null;
+        price: string | null;
+        rating: number | null;
+        photos: string[] | null;
+        categories: {
+            title: string | null;
+            alias: string | null;
+        }[] | null;
+        hours: { is_open_now: boolean | null }[] | null;
+        reviews: ReviewJson[] | null;
+        location: { formatted_address: string | null } | null;
+    }
+}
+
+export interface RestaurantDetailsSerializable {
+    id: string;
+    name: string | null;
+    price: string | null;
+    rating: number | null;
+    categories: { title: string | null }[];
+    isOpenNow: boolean | null;
+    reviews: ReviewSerializable[];
+    address: string | null;
 }
 
 export default RestaurantDetails;

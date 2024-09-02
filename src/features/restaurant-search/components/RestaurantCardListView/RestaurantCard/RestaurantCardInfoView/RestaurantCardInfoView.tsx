@@ -1,11 +1,8 @@
 import { View, StyleSheet } from "react-native";
 import RestaurantNameText from "./RestaurantNameText";
 import PriceAndCategoryText from "./PriceAndCategoryText";
-import { Row } from "@components";
+import { IsOpenNowIndicator, Row } from "@components";
 import RatingBar from "./RatingBar";
-import IsOpenNowIndicator from "./IsOpenNowIndicator";
-
-
 
 const RestaurantCardInfoView: React.FC<{
     name: string | null,

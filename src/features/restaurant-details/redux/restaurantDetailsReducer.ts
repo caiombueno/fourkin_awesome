@@ -1,10 +1,10 @@
-import { RestaurantDetails } from "@models";
+import { RestaurantDetailsSerializable } from "@models";
 import { createSlice } from "@reduxjs/toolkit";
 import { getRestaurantDetails } from "./getRestaurantDetails";
 
 const initialState = {
     loading: false,
-    data: null as RestaurantDetails | null,
+    data: null as RestaurantDetailsSerializable | null,
     error: null as Error | null,
 }
 

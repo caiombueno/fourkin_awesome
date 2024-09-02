@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleProp, View, ViewStyle } from "react-native";
+import { ActivityIndicator, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { RestaurantCard } from "./RestaurantCard";
 import { RestaurantSummary } from "@models";
 import { Text } from 'react-native';
@@ -41,18 +41,39 @@ const RestaurantCardListView: React.FC<{
 
 
 const LoadingIndicator: React.FC = () => (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={styles.loadingIndicatorView}>
         <ActivityIndicator />
         <Text>Loading restaurants...</Text>
     </View>
 );
 
 const ErrorIndicator: React.FC<{ error: string, }> = ({ error, }) => (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ color: 'red', marginBottom: 10 }}>Something went wrong:</Text>
-        <Text style={{ color: 'red', marginBottom: 20 }}>{error}</Text>
+    <View style={styles.errorIndicatorView}>
+        <Text style={styles.errorText}>Something went wrong:</Text>
+        <Text style={styles.errorDescriptionText}>{error}</Text>
     </View>
 );
+
+const styles = StyleSheet.create({
+    loadingIndicatorView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorIndicatorView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorText: {
+        color: 'red',
+        marginBottom: 10,
+    },
+    errorDescriptionText: {
+        color: 'red',
+        marginBottom: 20,
+    },
+});
 
 
 export default RestaurantCardListView;

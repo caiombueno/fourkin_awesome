@@ -1,2 +1,3 @@
 export * from './getRestaurantDetails';
-export * from './getRestaurantDetailsReducer';
+export * from './restaurantDetailsReducer';
+export * from './selectRestaurantDetails';

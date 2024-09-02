@@ -5,9 +5,12 @@ export const getRestaurantDetails = createAsyncThunk(
     'restaurant-details/getRestaurantDetails',
     async ({ id }: { id: string }) => {
         try {
-            const response = await restaurantRepository.getRestaurantDetails({ id });
+            const restaurantDetails = await restaurantRepository.getRestaurantDetails({ id });
 
-            return response;
+            // Redux requires the data to be serializable for safe storage.
+            const serializableRestaurantDetails = restaurantDetails.toSerializable();
+
+            return serializableRestaurantDetails;
         } catch (error) {
             throw error;
         }
