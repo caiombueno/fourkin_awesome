@@ -43,5 +43,4 @@ class RestaurantRepository {
 
 const restaurantRepository = new RestaurantRepository();
 
-export default RestaurantRepository;
-export { restaurantRepository };
+export { RestaurantRepository, restaurantRepository };
