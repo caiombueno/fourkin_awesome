@@ -2,8 +2,6 @@ import { View, Text, Image } from 'react-native';
 import React from 'react';
 import { RestaurantId } from '@models';
 import { useNavigation } from '@react-navigation/native';
-import Animated from 'react-native-reanimated';
-import { customTransition } from 'transition';
 import { SharedElement } from 'react-navigation-shared-element';
 
 interface RestaurantDetailsScreenProps {
@@ -18,10 +16,7 @@ type SharedElementsComponent = React.FC<RestaurantDetailsScreenProps> & {
 const RestaurantDetailsScreen: SharedElementsComponent = (
     { restaurantId, restaurantImageUrl }
 ) => {
-
-    const tag = (restaurantImageUrl === "https://s3-media3.fl.yelpcdn.com/bphoto/Lt856NRkMLixssknKH8FHA/o.jpg") ? "batata" : `tag.${restaurantImageUrl}`;
-
-    console.log(restaurantImageUrl);
+    console.log(restaurantId);
     return <View>
         <Text>Restaurant ID: {restaurantId}</Text>
         {restaurantImageUrl &&

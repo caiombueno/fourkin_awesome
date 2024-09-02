@@ -1,6 +1,3 @@
-
-import Animated from 'react-native-reanimated';
-import { customTransition } from 'transition';
 import { Image, StyleSheet } from 'react-native';
 import { SharedElement } from 'react-navigation-shared-element';
 
@@ -10,7 +7,6 @@ interface RestaurantCardImageProps {
 }
 
 const RestaurantCardImage: React.FC<RestaurantCardImageProps> = ({ uri }) => {
-    console.log('uri', uri);
     return (
         <SharedElement id={uri}>
             <Image
