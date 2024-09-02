@@ -17,3 +17,19 @@ export class NoRestaurantSummaryListFoundError extends DomainError {
         this.name = 'NoRestaurantSummaryListFoundError';
     }
 }
+
+export class RestaurantDetailsFetchFailureError extends DomainError {
+    constructor(message: string = 'Failed to fetch restaurant details') {
+        super();
+        this.message = message;
+        this.name = 'RestaurantDetailsFetchFailureError';
+    }
+}
+
+export class NoRestaurantDetailsFoundError extends DomainError {
+    constructor(message: string = 'No restaurant details were found') {
+        super();
+        this.message = message;
+        this.name = 'NoRestaurantDetailsFoundError';
+    }
+}
