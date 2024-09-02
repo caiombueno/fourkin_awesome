@@ -1,11 +1,17 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "types": [
+      "@types/jest"
+    ],
     "strict": true,
     "baseUrl": "./src",
     "paths": {
       "@data": [
         "data"
+      ],
+      "data/*": [
+        "data/*"
       ],
       "@features": [
         "features"
