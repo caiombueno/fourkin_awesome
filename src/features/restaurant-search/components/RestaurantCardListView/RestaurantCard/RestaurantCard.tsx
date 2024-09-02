@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { RestaurantId, RestaurantSummary } from '@models';
+import { RestaurantId, RestaurantSummarySerializable } from '@models';
 import { Row } from '@components';
 import RestaurantCardImage from './RestaurantCardImage';
 import { RestaurantCardInfoView } from './RestaurantCardInfoView';
@@ -20,7 +20,7 @@ const useNavigateToRestaurantDetails = () => {
 
 };
 
-const RestaurantCard: React.FC<{ restaurant: RestaurantSummary }> = ({ restaurant }) => {
+const RestaurantCard: React.FC<{ restaurant: RestaurantSummarySerializable }> = ({ restaurant }) => {
     const navigateToRestaurantDetails = useNavigateToRestaurantDetails();
 
     const restaurantImageUrl = restaurant.photos[0];

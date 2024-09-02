@@ -1,6 +1,6 @@
 import { ActivityIndicator, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { RestaurantCard } from "./RestaurantCard";
-import { RestaurantSummary } from "@models";
+import { RestaurantSummarySerializable } from "@models";
 import { Text } from 'react-native';
 import { useEffect } from "react";
 import { AppDispatch } from "@redux";
@@ -31,7 +31,7 @@ const RestaurantCardListView: React.FC<{
         return (
 
             <View style={style}>
-                {data.map((restaurantSummary: RestaurantSummary) => (
+                {data.map((restaurantSummary: RestaurantSummarySerializable) => (
                     <RestaurantCard key={restaurantSummary.id} restaurant={restaurantSummary} />
                 ))}
             </View>

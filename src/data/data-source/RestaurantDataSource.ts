@@ -1,16 +1,10 @@
 import { ApolloError, ApolloQueryResult, ErrorPolicy, NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import Constants from 'expo-constants';
-import { DataSourceRequestError, EmptyResultError, RestaurantDetails, RestaurantDetailsJson, RestaurantId, RestaurantSummary } from '@models';
+import { DataSourceRequestError, EmptyResultError, RestaurantDetails, RestaurantDetailsJson, RestaurantId, RestaurantSummary, RestaurantSummaryJson, RestaurantSummaryList, RestaurantSummaryListJson } from '@models';
 import queries from './queries';
-import RestaurantDataSourceParser, { RestaurantSummaryRawData } from './RestaurantDataSourceParser';
 
-interface RestaurantSummaryListData {
-  search: {
-    total: number;
-    business: RestaurantSummaryRawData[];
-  };
-}
+
 
 class RestaurantDataSource {
   private client: ApolloClient<NormalizedCacheObject>;
@@ -29,9 +23,9 @@ class RestaurantDataSource {
     });
   }
 
-  async getRestaurantSummaryList({ location, limit, offset }: { location: string, limit: number, offset: number }): Promise<RestaurantSummary[]> {
+  async getRestaurantSummaryList({ location, limit, offset }: { location: string, limit: number, offset: number }): Promise<RestaurantSummaryList> {
 
-    const result: ApolloQueryResult<RestaurantSummaryListData> = await this.client.query({
+    const result: ApolloQueryResult<RestaurantSummaryListJson> = await this.client.query({
       query: queries.getRestaurantSummaryList,
       variables: { location, limit, offset },
     }).catch((error) => {
@@ -45,9 +39,9 @@ class RestaurantDataSource {
     if (!result.data) throw new EmptyResultError();
 
 
-    const restaurantSummaryRawData: RestaurantSummaryRawData[] = result.data.search.business;
+    const restaurantSummaryListJson: RestaurantSummaryListJson = result.data;
 
-    const restaurantSummaries: RestaurantSummary[] = RestaurantDataSourceParser.parseRestaurantSummaryList(restaurantSummaryRawData);
+    const restaurantSummaries: RestaurantSummaryList = RestaurantSummaryList.fromJson(restaurantSummaryListJson);
 
     return restaurantSummaries;
 

@@ -1,7 +1,7 @@
-import { RestaurantSummary } from "@models";
+import { RestaurantSummarySerializable } from "@models";
 
 export default interface RestaurantSummaryListState {
     loading: boolean;
-    data: RestaurantSummary[];
+    data: RestaurantSummarySerializable[];
     error: string | null;
 }
