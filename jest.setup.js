@@ -6,3 +6,5 @@ jest.mock('expo-constants', () => ({
         },
     },
 }));
+
+global.__DEV__ = true;

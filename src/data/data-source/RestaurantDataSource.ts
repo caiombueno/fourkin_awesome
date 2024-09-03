@@ -26,11 +26,12 @@ class RestaurantDataSource {
   }
 
   async getRestaurantSummaryList({ location, limit, offset }: { location: string, limit: number, offset: number }): Promise<RestaurantSummaryList> {
-
+    console.log(location, limit, offset);
     const result: ApolloQueryResult<RestaurantSummaryListJson> = await this.client.query({
       query: queries.getRestaurantSummaryList,
       variables: { location, limit, offset },
     }).catch((error) => {
+      console.log(error);
       const message = (error instanceof ApolloError) ? error.message : null;
       throw new DataSourceRequestError(message)
     });

@@ -39,3 +39,5 @@ yarn-error.*
 .env
 
 coverage/
+
+package-lock.json

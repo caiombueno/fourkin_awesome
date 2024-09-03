@@ -1,44 +1,59 @@
-import { ActivityIndicator, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+import { ActivityIndicator, FlatList, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { RestaurantCard } from "./RestaurantCard";
-import { RestaurantSummarySerializable } from "@models";
 import { Text } from 'react-native';
 import { useEffect } from "react";
 import { AppDispatch } from "@redux";
 import { useDispatch } from "react-redux";
-import { getRestaurantSummaryList, RestaurantSummaryListState, selectRestaurantSummaryList } from "../../redux";
+import { getRestaurantSummaryList, resetRestaurantSummaryList, selectRestaurantSummaryList } from "../../redux";
 
 const RestaurantCardListView: React.FC<{
-    location: string,
-    limit?: number,
-    offset?: number,
-    style?: StyleProp<ViewStyle>
-}> = ({
-    location,
-    limit = 10,
-    offset = 0,
-    style
-}) => {
-        const dispatch: AppDispatch = useDispatch();
-        const { loading, data, error }: RestaurantSummaryListState = selectRestaurantSummaryList();
+    location: string;
+    limit?: number;
+    style?: StyleProp<ViewStyle>;
+}> = ({ location, limit = 10, style, }) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { loading, data, error, offset, hasMore } = selectRestaurantSummaryList();
+    console.log('rebuild')
 
-        useEffect(() => {
-            dispatch(getRestaurantSummaryList({ location: location, limit: limit, offset: offset }));
-        }, [dispatch]);
+    useEffect(() => {
+        dispatch(getRestaurantSummaryList({ location, limit, offset: 0 }));
 
-        if (loading) return <LoadingIndicator />;
-        if (error) return <ErrorIndicator error={error} />
+        return () => { dispatch(resetRestaurantSummaryList()) };
+    }, [dispatch, location, limit]);
 
-        return (
-
-            <View style={style}>
-                {data.map((restaurantSummary: RestaurantSummarySerializable) => (
-                    <RestaurantCard key={restaurantSummary.id} restaurant={restaurantSummary} />
-                ))}
-            </View>
-
-        );
+    const loadMoreRestaurants = () => {
+        if (hasMore && !loading) {
+            console.log('Loading more restaurants...');
+            dispatch(getRestaurantSummaryList({ location, limit, offset: offset + limit }));
+        }
     };
 
+    if (loading && data.length === 0) {
+        return <LoadingIndicator />;
+    }
+
+    if (error && data.length === 0) {
+        return <ErrorIndicator error={error} />;
+    }
+
+    return (
+
+        <FlatList
+
+            contentContainerStyle={style}
+            scrollEnabled={true}
+            data={data}
+            renderItem={({ item }) => (
+                <RestaurantCard key={item.id} restaurant={item} />
+            )}
+            keyExtractor={(item) => item.id.toString()}
+            onEndReached={loadMoreRestaurants}
+            onEndReachedThreshold={0.1}
+            ListFooterComponent={loading && hasMore ? <LoadingIndicator /> : (error ? <ErrorIndicator error={error} /> : null)}
+        />
+
+    );
+};
 
 const LoadingIndicator: React.FC = () => (
     <View style={styles.loadingIndicatorView}>

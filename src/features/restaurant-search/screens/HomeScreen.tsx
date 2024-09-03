@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-import { SafeAreaView, Text, StyleSheet, View, ScrollView } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, View } from 'react-native';
 import { EmptyLocationIndicator, RestaurantCardListView, TextField } from '../components';
 import { selectLocationSearchInput, setLocationInput } from '../redux';
 import { useDispatch } from 'react-redux';
 import { LocationPermissionStatus, LocationService } from '../services';
-
+import { AppDispatch } from '@redux';
 
 const HomeScreen: React.FC = () => {
     const location = selectLocationSearchInput();
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
 
     const getLocation = async () => {
         // Request permission to access location
@@ -16,53 +16,55 @@ const HomeScreen: React.FC = () => {
         if (permissionStatus !== LocationPermissionStatus.granted) return;
 
         const { city, region, country } = await LocationService.getCurrentLocation();
-
         dispatch(setLocationInput(`${city}, ${region}, ${country}`));
     };
 
-    useEffect(() => { getLocation() }, []);
+    useEffect(() => { getLocation() }, [dispatch]);
 
     return (
-        <ScrollView contentContainerStyle={{ padding: 10 }} >
-            <SafeAreaView style={styles.container}>
-                <View style={styles.headerContainer}>
-                    <Text style={styles.greeting}>Hello, username!</Text>
-                    <View style={styles.inputContainer}>
-                        <TextField
-                            key={location}
-                            value={location}
-                            onChangeText={(location) => dispatch(setLocationInput(location))}
-                            placeholder="Enter location"
-                        />
-                    </View>
-                </View>
-                {location !== '' ?
-                    <RestaurantCardListView key={location} location={location} style={styles.restaurantListView} />
-                    : <EmptyLocationIndicator onRetryLocation={getLocation} />
-                }
-            </SafeAreaView>
-        </ScrollView >
+        <SafeAreaView style={styles.container}>
+            <HomeScreenHeader location={location} setLocationInput={(location) => { dispatch(setLocationInput(location)) }} />
+            {location === '' ? (
+                <EmptyLocationIndicator onRetryLocation={getLocation} />
+            ) : (
+                <RestaurantCardListView key={location} location={location} style={styles.restaurantListView} />
+            )}
+        </SafeAreaView>
+    );
+};
+
+const HomeScreenHeader: React.FC<{ location: string, setLocationInput: (location: string) => void }> = ({ location, setLocationInput }) => {
+    return (
+        <View style={styles.headerContainer}>
+            <Text style={styles.greeting}>Hello, username!</Text>
+            <View style={styles.inputContainer}>
+                <TextField
+                    key={location}
+                    value={location}
+                    onChangeText={setLocationInput}
+                    placeholder="Enter location"
+                />
+            </View>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
     },
     headerContainer: {
-        flex: 1,
+        padding: 10,
     },
     greeting: {
         fontSize: 18,
-        marginBottom: 20,
+        marginBottom: 10,
     },
     inputContainer: {
-        flex: 1,
-        // justifyContent: 'space-between',
+        // marginBottom: 10, // Provide some spacing below the input field
     },
     restaurantListView: {
-        flex: 10,
+        // flex: 1, // Ensure this fills the remaining space
     },
     emptyStateContainer: {
         flex: 1,
