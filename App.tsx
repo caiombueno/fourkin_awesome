@@ -1,22 +1,22 @@
 
 import { store } from '@redux';
 import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
 import React, { ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { rootRoutes, RootStackParamList } from '@navigation';
-import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 import { selectRestaurantDetails } from '@features';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 
-const Stack = createSharedElementStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <AppNavigationContainer >
-          <StatusBar style="auto" />
+          <ExpoStatusBar style="auto" />
         </AppNavigationContainer>
       </GestureHandlerRootView>
     </Provider>
@@ -34,10 +34,6 @@ const AppNavigationContainer: React.FC<{ children?: ReactNode }> = ({ children }
       <Stack.Screen
         name={rootRoutes.restaurantDetails.name}
         component={rootRoutes.restaurantDetails.screen}
-        sharedElements={(route, otherRoute, showing) => {
-          const { restaurantImageUrl } = route.params;
-          return [restaurantImageUrl];
-        }}
 
         options={{
           title: selectRestaurantDetails().data?.name ?? '',
@@ -47,9 +43,10 @@ const AppNavigationContainer: React.FC<{ children?: ReactNode }> = ({ children }
 
         }}
       />
-      {children}
+
 
     </Stack.Navigator>
+    {children}
   </NavigationContainer>
 };
 

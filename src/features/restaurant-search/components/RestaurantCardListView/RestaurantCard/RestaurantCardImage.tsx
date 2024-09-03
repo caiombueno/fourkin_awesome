@@ -1,5 +1,5 @@
-import { SharedImage } from '@components';
-import { StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, Image } from 'react-native';
 
 // Extending FC to include sharedElements
 interface RestaurantCardImageProps {
@@ -7,9 +7,13 @@ interface RestaurantCardImageProps {
 }
 
 const RestaurantCardImage: React.FC<RestaurantCardImageProps> = ({ uri }) => {
+
+
+
     return (
-        <SharedImage
-            url={uri}
+        <Image
+            source={{ uri: uri }}
+
             style={styles.image}
         />
 
