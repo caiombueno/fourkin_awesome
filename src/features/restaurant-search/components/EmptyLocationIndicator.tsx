@@ -2,7 +2,7 @@ import { Button, GestureResponderEvent, StyleSheet, View, Text } from "react-nat
 import React from 'react';
 
 const EmptyLocationIndicator: React.FC<{ onRetryLocation: (event: GestureResponderEvent) => void }> = ({ onRetryLocation }) => (
-    <View style={styles.emptyStateContainer}>
+    <View testID="EmptyLocationIndicator" style={styles.emptyStateContainer}>
         <Text style={styles.emptyStateText}>Enter your location to discover restaurants near you!</Text>
         <Button title="Retry Location" onPress={onRetryLocation} />
         <Text style={styles.emptyStateText}>or manually enter a location in the input above.</Text>

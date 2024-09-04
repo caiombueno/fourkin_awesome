@@ -13,7 +13,6 @@ const RestaurantCardListView: React.FC<{
 }> = ({ location, limit = 10, style, }) => {
     const dispatch = useDispatch<AppDispatch>();
     const { loading, data, error, offset, hasMore } = selectRestaurantSummaryList();
-    console.log('rebuild')
 
     useEffect(() => {
         dispatch(getRestaurantSummaryList({ location, limit, offset: 0 }));
@@ -24,6 +23,7 @@ const RestaurantCardListView: React.FC<{
     const loadMoreRestaurants = () => {
         if (hasMore && !loading) {
             console.log('Loading more restaurants...');
+            console.log(location);
             dispatch(getRestaurantSummaryList({ location, limit, offset: offset + limit }));
         }
     };
@@ -39,7 +39,7 @@ const RestaurantCardListView: React.FC<{
     return (
 
         <FlatList
-
+            testID="RestaurantCardListView.FlatList"
             contentContainerStyle={style}
             scrollEnabled={true}
             data={data}
@@ -56,14 +56,14 @@ const RestaurantCardListView: React.FC<{
 };
 
 const LoadingIndicator: React.FC = () => (
-    <View style={styles.loadingIndicatorView}>
+    <View testID="RestaurantCardListView.LoadingIndicator" style={styles.loadingIndicatorView}>
         <ActivityIndicator />
         <Text>Loading restaurants...</Text>
     </View>
 );
 
 const ErrorIndicator: React.FC<{ error: string, }> = ({ error, }) => (
-    <View style={styles.errorIndicatorView}>
+    <View testID="RestaurantCardListView.ErrorIndicator" style={styles.errorIndicatorView}>
         <Text style={styles.errorText}>Something went wrong:</Text>
         <Text style={styles.errorDescriptionText}>{error}</Text>
     </View>

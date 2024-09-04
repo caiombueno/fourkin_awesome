@@ -28,6 +28,7 @@ describe('RestaurantRepository', () => {
             // Arrange
 
             const mockRestaurantSummaryList = new RestaurantSummaryList(
+                1,
                 [
                     new RestaurantSummary(
                         {

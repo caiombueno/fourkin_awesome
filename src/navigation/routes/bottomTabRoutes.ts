@@ -11,7 +11,7 @@ enum IoniconNames {
 
 interface BottomTabRoute extends AppRoute {
     name: keyof BottomTabParamList;
-    ioniconName: IoniconNames;
+    ioniconName: string;
     screen: ComponentType;
 }
 
@@ -22,7 +22,7 @@ type BottomTabParamList = {
 };
 
 
-interface BottomTabRoutes {
+export interface BottomTabRoutes {
     home: BottomTabRoute;
     favorites: BottomTabRoute;
     account: BottomTabRoute;

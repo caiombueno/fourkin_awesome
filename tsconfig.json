@@ -16,11 +16,17 @@
       "@features": [
         "features"
       ],
+      "@features/*": [
+        "features/*"
+      ],
       "@components": [
         "components"
       ],
       "@navigation": [
         "navigation"
+      ],
+      "@navigation/*": [
+        "navigation/*"
       ],
       "@models": [
         "models"

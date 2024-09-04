@@ -21,11 +21,13 @@ export const RestaurantDetailsView: React.FC<{
     reviews,
     address,
 }) => {
+
+        const categoryTitle = (categories.length > 0) ? categories[0].title : '';
         return (
-            <View style={styles.container}>
+            <View testID='RestaurantDetailsView' style={styles.container}>
                 {/* Restaurant Name, Price, and Open Status */}
                 <View style={styles.header}>
-                    <Text style={styles.price}>{price} {categories[0].title}</Text>
+                    <Text style={styles.price}>{price} {categoryTitle}</Text>
                     <IsOpenNowIndicator isOpenNow={isOpenNow} />
                 </View>
 

@@ -14,7 +14,7 @@ const BottomTabNavigator = () => {
                 tabBarIcon: ({ color, size }) => {
                     const iconName = getRouteFromName(route.name).ioniconName;
 
-                    return <Ionicons name={iconName} size={size} color={color} />;
+                    return <Ionicons name={iconName as any} size={size} color={color} />;
                 },
                 headerShown: false,
             })}

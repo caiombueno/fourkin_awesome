@@ -12,6 +12,7 @@ import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
+  console.log(store.getState());
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={{ flex: 1 }}>
@@ -39,8 +40,6 @@ const AppNavigationContainer: React.FC<{ children?: ReactNode }> = ({ children }
           title: selectRestaurantDetails().data?.name ?? '',
           headerBackTitleVisible: false,
           headerTintColor: 'black',
-
-
         }}
       />
 

@@ -23,18 +23,19 @@ const useNavigateToRestaurantDetails = () => {
 const RestaurantCard: React.FC<{ restaurant: RestaurantSummarySerializable }> = ({ restaurant }) => {
     const navigateToRestaurantDetails = useNavigateToRestaurantDetails();
 
-    const restaurantImageUrl = restaurant.photos[0];
+    const photos = restaurant.photos;
+    const restaurantImageUrl = (photos.length > 0) ? photos[0] : null;
 
 
     const onPress = () => {
-        navigateToRestaurantDetails({ restaurantId: restaurant.id, restaurantImageUrl: restaurantImageUrl });
+        navigateToRestaurantDetails({ restaurantId: restaurant.id, restaurantImageUrl: restaurantImageUrl ?? undefined });
     };
 
     return (
         <TouchableOpacity onPress={onPress}>
             <Row style={styles.card}>
 
-                <RestaurantCardImage uri={restaurantImageUrl} />
+                {restaurantImageUrl && <RestaurantCardImage uri={restaurantImageUrl} />}
                 <RestaurantCardInfoView
                     name={restaurant.name}
                     price={restaurant.price}

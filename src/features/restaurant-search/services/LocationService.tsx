@@ -1,9 +1,9 @@
 import * as Location from 'expo-location';
 
 enum LocationPermissionStatus {
-    granted,
-    denied,
-    unknown,
+    granted = 'granted',
+    denied = 'denied',
+    unknown = 'unknown',
 }
 
 class LocationService {

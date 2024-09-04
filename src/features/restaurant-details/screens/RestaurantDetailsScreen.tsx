@@ -1,11 +1,10 @@
 import { Text, ScrollView, View, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
 import React from 'react';
 import { RestaurantId } from '@models';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@redux';
 import { getRestaurantDetails, selectRestaurantDetails } from '../redux';
 import { RestaurantDetailsImage, RestaurantDetailsView } from '../components';
-import { Ionicons } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
 
@@ -42,8 +41,7 @@ const RestaurantDetailsScreen: React.FC<RestaurantDetailsScreenProps> = (
 
 const ErrorIndicator: React.FC<{ message: string }> = ({ message }) => {
     return (
-        <View style={styles.centeredContainer}>
-            <Ionicons name="alert-circle" size={width * 0.1} color="red" />
+        <View testID='RestaurantDetailsScreen.ErrorIndicator' style={styles.centeredContainer}>
             <Text style={styles.errorText}>{message}</Text>
         </View>
     );
@@ -51,7 +49,7 @@ const ErrorIndicator: React.FC<{ message: string }> = ({ message }) => {
 
 const LoadingIndicator: React.FC = () => {
     return (
-        <View style={styles.centeredContainer}>
+        <View testID='RestaurantDetailsScreen.LoadingIndicator' style={styles.centeredContainer}>
             <ActivityIndicator size="large" />
         </View>
     );
