@@ -10,7 +10,7 @@ module.exports = {
     },
     preset: '@testing-library/react-native',
     transformIgnorePatterns: [
-        '<rootDir>/node_modules/(?!(react-native|react-native/Libraries/Animated|@react-native|react-redux|expo-vector-icons|@react-navigation|@expo/vector-icons|@react-native-community|expo|@expo|expo-location|expo-modules-core|@unimodules|redux|redux-persist|expo-font|react-native-reanimated)/)',
+        '<rootDir>/node_modules/(?!(react-native|react-native/Libraries/Animated|@react-native-async-storage|@react-native-async-storage/async-storage|@react-native|react-redux|expo-vector-icons|@react-navigation|@expo/vector-icons|@react-native-community|expo|@expo|expo-location|expo-modules-core|@unimodules|redux|redux-persist|expo-font|react-native-reanimated|firebase|firebase/app|@firebase)/)',
     ],
 
     moduleNameMapper: {
@@ -21,7 +21,8 @@ module.exports = {
         "@components": "<rootDir>/src/components/$1",
         "^@navigation/(.*)$": "<rootDir>/src/navigation/$1",
         "@models": "<rootDir>/src/models/$1",
-        "^@redux/(.*)$": "<rootDir>/src/redux/$1"
+        "^@redux/(.*)$": "<rootDir>/src/redux/$1",
+        "@firebaseConfig": "<rootDir>/firebaseConfig.js",
     },
     moduleFileExtensions: [
         "ios.js",

@@ -33,7 +33,10 @@
       ],
       "@redux": [
         "redux"
-      ]
+      ],
+      "@firebaseConfig": [
+        "../firebaseConfig.js"
+      ],
     },
   },
   "exclude": [

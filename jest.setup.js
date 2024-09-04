@@ -43,5 +43,26 @@ jest.mock('expo-location', () => ({
     },
 }));
 
+jest.mock('firebase/auth', () => ({
+    signInWithEmailAndPassword: jest.fn(),
+    createUserWithEmailAndPassword: jest.fn(),
+    signOut: jest.fn(),
+    initializeAuth: jest.fn(),
+    getReactNativePersistence: jest.fn(),
+}));
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+    default: {
+        getItem: jest.fn(),
+        setItem: jest.fn(),
+        removeItem: jest.fn(),
+    },
+}));
+
+jest.mock('firebase/app', () => ({
+    initializeApp: jest.fn(),
+
+}));
+
 
 global.__DEV__ = true;
