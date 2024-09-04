@@ -15,5 +15,10 @@ export const mockRootState = {
     },
     "restaurantSummaryListSearchInput": {
         "location": "San Francisco, California, USA",
-    }
+    },
+    "auth": {
+        "user": null,
+        "error": null,
+        "loading": false
+    },
 }
