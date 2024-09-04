@@ -2,7 +2,7 @@ import { ComponentType } from "react";
 
 interface AppRoute {
     name: string;
-    screen: ComponentType;
+    component: ComponentType;
 }
 
-export default AppRoute;
+export { AppRoute };

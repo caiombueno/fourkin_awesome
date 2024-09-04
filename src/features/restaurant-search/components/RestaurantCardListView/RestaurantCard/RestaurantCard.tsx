@@ -4,31 +4,28 @@ import { RestaurantId, RestaurantSummarySerializable } from '@models';
 import { Row } from '@components';
 import RestaurantCardImage from './RestaurantCardImage';
 import { RestaurantCardInfoView } from './RestaurantCardInfoView';
-import { RootStackParamList } from '@navigation';
+import { AppNavigationParams } from '@navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 
-
-
-type RestaurantDetailsNavigationProp = StackNavigationProp<RootStackParamList, 'RestaurantDetails'>;
+type RestaurantDetailsNavigationProp = StackNavigationProp<AppNavigationParams, 'RestaurantDetails'>;
 
 const useNavigateToRestaurantDetails = () => {
     const navigation = useNavigation<RestaurantDetailsNavigationProp>();
 
     return ({ restaurantId, restaurantImageUrl }: { restaurantId: RestaurantId, restaurantImageUrl?: string }) =>
         navigation.navigate('RestaurantDetails', { restaurantId: restaurantId, restaurantImageUrl: restaurantImageUrl });
-
 };
 
 const RestaurantCard: React.FC<{ restaurant: RestaurantSummarySerializable }> = ({ restaurant }) => {
-    const navigateToRestaurantDetails = useNavigateToRestaurantDetails();
+    const goToRestaurantDetails = useNavigateToRestaurantDetails();
 
     const photos = restaurant.photos;
     const restaurantImageUrl = (photos.length > 0) ? photos[0] : null;
 
 
     const onPress = () => {
-        navigateToRestaurantDetails({ restaurantId: restaurant.id, restaurantImageUrl: restaurantImageUrl ?? undefined });
+        goToRestaurantDetails({ restaurantId: restaurant.id, restaurantImageUrl: restaurantImageUrl ?? undefined });
     };
 
     return (

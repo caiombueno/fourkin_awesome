@@ -9,42 +9,41 @@ enum IoniconNames {
     person = 'person',
 }
 
-interface BottomTabRoute extends AppRoute {
-    name: keyof BottomTabParamList;
-    ioniconName: string;
-    screen: ComponentType;
+interface MainTabRoute extends AppRoute {
+    name: keyof MainTabParamList;
+    ioniconName: IoniconNames;
+    component: ComponentType;
 }
 
-type BottomTabParamList = {
+type MainTabParamList = {
     Home: undefined;
     Favorites: undefined;
     Account: undefined;
 };
 
 
-export interface BottomTabRoutes {
-    home: BottomTabRoute;
-    favorites: BottomTabRoute;
-    account: BottomTabRoute;
+export interface MainTabRoutes {
+    home: MainTabRoute;
+    favorites: MainTabRoute;
+    account: MainTabRoute;
 }
 
-const bottomTabRoutes: BottomTabRoutes = {
+const mainTabRoutes: MainTabRoutes = {
     home: {
         name: 'Home',
         ioniconName: IoniconNames.home,
-        screen: HomeScreen,
+        component: HomeScreen,
     },
     favorites: {
         name: 'Favorites',
         ioniconName: IoniconNames.heart,
-        screen: FavoriteRestaurantsScreen,
+        component: FavoriteRestaurantsScreen,
     },
     account: {
         name: 'Account',
         ioniconName: IoniconNames.person,
-        screen: AccountScreen,
+        component: AccountScreen,
     },
 };
 
-export default bottomTabRoutes;
-export { BottomTabParamList, BottomTabRoute }
+export { mainTabRoutes, MainTabParamList, MainTabRoute, IoniconNames }

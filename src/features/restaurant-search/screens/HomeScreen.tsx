@@ -5,6 +5,7 @@ import { selectLocationSearchInput, setLocationInput } from '../redux';
 import { useDispatch } from 'react-redux';
 import { LocationPermissionStatus, LocationService } from '../services';
 import { AppDispatch } from '@redux';
+import { selectCurrentUser } from '../../authentication';
 
 const HomeScreen: React.FC = () => {
     const location = selectLocationSearchInput();
@@ -34,9 +35,10 @@ const HomeScreen: React.FC = () => {
 };
 
 const HomeScreenHeader: React.FC<{ location: string, setLocationInput: (location: string) => void }> = ({ location, setLocationInput }) => {
+    const user = selectCurrentUser()?.email;
     return (
         <View testID='HomeScreenHeader' style={styles.headerContainer}>
-            <Text style={styles.greeting}>Hello, username!</Text>
+            <Text style={styles.greeting}>Hello, {user}!</Text>
             <View style={styles.inputContainer}>
                 <TextField
                     key={location}

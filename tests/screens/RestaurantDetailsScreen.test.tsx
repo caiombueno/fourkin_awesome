@@ -2,9 +2,11 @@ import React from 'react';
 import { render } from '@testing-library/react-native';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
-import { RestaurantDetailsScreen } from '@features';
+import { RestaurantDetailsScreen, RestaurantDetailsScreenProps } from '@features';
 import { componentsTestIds, mockRootState } from '../utils';
 import { RestaurantDetailsSerializable } from '@models';
+import { RouteProp } from '@react-navigation/native';
+import { AppNavigationParams } from '@navigation';
 
 const mockStore = configureStore([]);
 
@@ -18,11 +20,22 @@ describe('RestaurantDetailsScreen', () => {
 
     const restaurantDetailsScreenTestIds = componentsTestIds.RestaurantDetailsScreen;
 
-    const renderRestaurantDetailsScreenWithProvider = (store: any, restaurantId: string, restaurantImageUrl?: string) => render(
-        <Provider store={store}>
-            <RestaurantDetailsScreen restaurantId={restaurantId} restaurantImageUrl={restaurantImageUrl} />
-        </Provider>
-    );
+    const renderRestaurantDetailsScreenWithProvider = (store: any, restaurantId: string, restaurantImageUrl?: string) => {
+        const mockRoute: RouteProp<AppNavigationParams, 'RestaurantDetails'> = {
+            key: 'restaurant-details-key',
+            name: 'RestaurantDetails',
+            params: {
+                restaurantId,
+                restaurantImageUrl,
+            },
+        };
+
+        return render(
+            <Provider store={store}>
+                <RestaurantDetailsScreen route={mockRoute as RestaurantDetailsScreenProps['route']} />
+            </Provider>
+        );
+    };
 
     const mockStoreWithState = (state: any) => {
         const store = mockStore(state);

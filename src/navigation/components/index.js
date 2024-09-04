@@ -1,1 +1,1 @@
-export { default as BottomTabNavigator } from './BottomTabNavigator';
+export { default as MainTabNavigator } from './MainTabNavigator';

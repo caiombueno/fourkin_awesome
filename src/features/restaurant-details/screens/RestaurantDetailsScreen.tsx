@@ -5,17 +5,19 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@redux';
 import { getRestaurantDetails, selectRestaurantDetails } from '../redux';
 import { RestaurantDetailsImage, RestaurantDetailsView } from '../components';
+import { RouteProp } from '@react-navigation/native';
+import { AppNavigationParams } from '@navigation';
 
 const { width, height } = Dimensions.get('window');
 
-interface RestaurantDetailsScreenProps {
-    restaurantId: RestaurantId;
-    restaurantImageUrl?: string;
-}
+type RestaurantDetailsScreenProps = {
+    route: RouteProp<AppNavigationParams, 'RestaurantDetails'>;
+};
 
 const RestaurantDetailsScreen: React.FC<RestaurantDetailsScreenProps> = (
-    { restaurantId, restaurantImageUrl }
+    { route }
 ) => {
+    const { restaurantId, restaurantImageUrl } = route.params;
     const { loading, data, error } = selectRestaurantDetails();
     const dispatch: AppDispatch = useDispatch();
 
@@ -72,4 +74,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export { RestaurantDetailsScreen };
+export { RestaurantDetailsScreen, RestaurantDetailsScreenProps };
