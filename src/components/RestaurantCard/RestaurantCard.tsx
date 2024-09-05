@@ -29,8 +29,8 @@ const RestaurantCard: React.FC<{ restaurant: RestaurantSummarySerializable }> = 
     };
 
     return (
-        <TouchableOpacity onPress={onPress}>
-            <Row style={styles.card}>
+        <TouchableOpacity onPress={onPress} >
+            <Row style={styles.card} testID={`restaurantCard-${restaurant.id}`}>
 
                 {restaurantImageUrl && <RestaurantCardImage uri={restaurantImageUrl} />}
                 <RestaurantCardInfoView

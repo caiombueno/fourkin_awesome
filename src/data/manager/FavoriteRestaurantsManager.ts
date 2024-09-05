@@ -11,7 +11,8 @@ class FavoriteRestaurantsManager {
     }
 
     async addFavoriteRestaurantId({ restaurantId }: { restaurantId: RestaurantId }) {
-        await favoriteRestaurantsRepository.addFavoriteRestaurantId({ userId: this.currentUserId, restaurantId });
+        const userId = this.currentUserId;
+        await favoriteRestaurantsRepository.addFavoriteRestaurantId({ userId, restaurantId });
     }
 
     async getFavoriteRestaurantsIds(): Promise<RestaurantSummaryList> {
@@ -31,4 +32,4 @@ class FavoriteRestaurantsManager {
 }
 
 const favoriteRestaurantsManager = new FavoriteRestaurantsManager();
-export { favoriteRestaurantsManager };
+export { favoriteRestaurantsManager, FavoriteRestaurantsManager };

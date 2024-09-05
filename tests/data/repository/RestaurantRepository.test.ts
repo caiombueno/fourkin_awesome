@@ -1,18 +1,18 @@
 import { RestaurantRepository, restaurantDataSource } from '@data';
 
-
 import {
-    NoRestaurantSummaryListFoundError,
-    RestaurantSummaryListFetchFailureError,
     EmptyResultError,
     DataSourceRequestError,
     RestaurantSummaryList,
     RestaurantDetails,
-    RestaurantSummary
+    RestaurantSummary,
+    NoRestaurantSummariesFoundError,
+    RestaurantSummaryFetchError,
+    NoRestaurantDetailsFoundError,
+    RestaurantDetailsFetchError
 } from '@models';
 
 
-// Mock the restaurantDataSource
 jest.mock('../../../src/data/data-source');
 
 describe('RestaurantRepository', () => {
@@ -22,11 +22,9 @@ describe('RestaurantRepository', () => {
         restaurantRepository = new RestaurantRepository();
     });
 
-    // Tests for getRestaurantSummaryList
     describe('getRestaurantSummaryList', () => {
         it('should return restaurant summary list successfully', async () => {
             // Arrange
-
             const mockRestaurantSummaryList = new RestaurantSummaryList(
                 1,
                 [
@@ -53,17 +51,17 @@ describe('RestaurantRepository', () => {
             expect(restaurantDataSource.getRestaurantSummaryList).toHaveBeenCalledWith({ location: 'New York', limit: 1, offset: 0 });
         });
 
-        it('should throw NoRestaurantSummaryListFoundError when EmptyResultError is thrown', async () => {
+        it('should throw NoRestaurantSummariesFoundError when EmptyResultError is thrown', async () => {
             // Arrange
             (restaurantDataSource.getRestaurantSummaryList as jest.Mock).mockRejectedValue(new EmptyResultError());
 
             // Act & Assert
             await expect(
                 restaurantRepository.getRestaurantSummaryList({ location: 'New York', limit: 1, offset: 0 })
-            ).rejects.toThrow(NoRestaurantSummaryListFoundError);
+            ).rejects.toThrow(NoRestaurantSummariesFoundError);
         });
 
-        it('should throw RestaurantSummaryListFetchFailureError with message when DataSourceRequestError with message is thrown', async () => {
+        it('should throw RestaurantSummaryFetchError with message when DataSourceRequestError with message is thrown', async () => {
             // Arrange
             const errorMessage = 'Failed to fetch restaurant summary list';
             (restaurantDataSource.getRestaurantSummaryList as jest.Mock).mockRejectedValue(new DataSourceRequestError(errorMessage));
@@ -71,17 +69,17 @@ describe('RestaurantRepository', () => {
             // Act & Assert
             await expect(
                 restaurantRepository.getRestaurantSummaryList({ location: 'New York', limit: 1, offset: 0 })
-            ).rejects.toThrowError(new RestaurantSummaryListFetchFailureError(errorMessage));
+            ).rejects.toThrowError(new RestaurantSummaryFetchError(errorMessage));
         });
 
-        it('should throw RestaurantSummaryListFetchFailureError when DataSourceRequestError without message is thrown', async () => {
+        it('should throw RestaurantSummaryFetchError when DataSourceRequestError without message is thrown', async () => {
             // Arrange
             (restaurantDataSource.getRestaurantSummaryList as jest.Mock).mockRejectedValue(new DataSourceRequestError());
 
             // Act & Assert
             await expect(
                 restaurantRepository.getRestaurantSummaryList({ location: 'New York', limit: 1, offset: 0 })
-            ).rejects.toThrow(RestaurantSummaryListFetchFailureError);
+            ).rejects.toThrow(RestaurantSummaryFetchError);
         });
 
         it('should rethrow unknown errors', async () => {
@@ -111,17 +109,17 @@ describe('RestaurantRepository', () => {
             expect(restaurantDataSource.getRestaurantDetails).toHaveBeenCalledWith({ id: '1' });
         });
 
-        it('should throw NoRestaurantSummaryListFoundError when EmptyResultError is thrown', async () => {
+        it('should throw NoRestaurantDetailsFoundError when EmptyResultError is thrown', async () => {
             // Arrange
             (restaurantDataSource.getRestaurantDetails as jest.Mock).mockRejectedValue(new EmptyResultError());
 
             // Act & Assert
             await expect(
                 restaurantRepository.getRestaurantDetails({ id: '1' })
-            ).rejects.toThrow(NoRestaurantSummaryListFoundError);
+            ).rejects.toThrow(NoRestaurantDetailsFoundError);
         });
 
-        it('should throw RestaurantSummaryListFetchFailureError with message when DataSourceRequestError with message is thrown', async () => {
+        it('should throw RestaurantDetailsFetchError with message when DataSourceRequestError with message is thrown', async () => {
             // Arrange
             const errorMessage = 'Failed to fetch restaurant details';
             (restaurantDataSource.getRestaurantDetails as jest.Mock).mockRejectedValue(new DataSourceRequestError(errorMessage));
@@ -129,17 +127,17 @@ describe('RestaurantRepository', () => {
             // Act & Assert
             await expect(
                 restaurantRepository.getRestaurantDetails({ id: '1' })
-            ).rejects.toThrowError(new RestaurantSummaryListFetchFailureError(errorMessage));
+            ).rejects.toThrowError(new RestaurantDetailsFetchError(errorMessage));
         });
 
-        it('should throw RestaurantSummaryListFetchFailureError when DataSourceRequestError without message is thrown', async () => {
+        it('should throw RestaurantDetailsFetchError when DataSourceRequestError without message is thrown', async () => {
             // Arrange
             (restaurantDataSource.getRestaurantDetails as jest.Mock).mockRejectedValue(new DataSourceRequestError());
 
             // Act & Assert
             await expect(
                 restaurantRepository.getRestaurantDetails({ id: '1' })
-            ).rejects.toThrow(RestaurantSummaryListFetchFailureError);
+            ).rejects.toThrow(RestaurantDetailsFetchError);
         });
 
         it('should rethrow unknown errors', async () => {

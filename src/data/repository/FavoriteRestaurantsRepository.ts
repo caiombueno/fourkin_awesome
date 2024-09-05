@@ -1,26 +1,26 @@
 
-import { InternalError, AlreadyExistsError, NotFoundError, PermissionDeniedError, UnauthenticatedError, RestaurantId } from '@models'; // Import necessary custom error classes
+import { InternalError, FavoriteAlreadyExistsError, FavoriteNotFoundError, FavoritePermissionDeniedError, UnauthenticatedError, RestaurantId, PermissionDeniedError } from '@models'; // Import necessary custom error classes
 import { favoriteRestaurantsDataSource } from '../data-source';
 
 //* https://firebase.google.com/docs/reference/js/firestore_.md#firestoreerrorcode
 enum FirestoreErrorCode {
-    OK = "OK",
-    CANCELLED = "CANCELLED",
-    UNKNOWN = "UNKNOWN",
-    INVALID_ARGUMENT = "INVALID-ARGUMENT",
-    DEADLINE_EXCEEDED = "DEADLINE-EXCEEDED",
-    NOT_FOUND = "NOT-FOUND",
-    ALREADY_EXISTS = "ALREADY-EXISTS",
-    PERMISSION_DENIED = "PERMISSION-DENIED",
-    RESOURCE_EXHAUSTED = "RESOURCE-EXHAUSTED",
-    FAILED_PRECONDITION = "FAILED-PRECONDITION",
-    ABORTED = "ABORTED",
-    OUT_OF_RANGE = "OUT-OF-RANGE",
-    UNIMPLEMENTED = "UNIMPLEMENTED",
-    INTERNAL = "INTERNAL",
-    UNAVAILABLE = "UNAVAILABLE",
-    DATA_LOSS = "DATA-LOSS",
-    UNAUTHENTICATED = "UNAUTHENTICATED"
+    OK = "ok",
+    CANCELLED = "cancelled",
+    UNKNOWN = "unknown",
+    INVALID_ARGUMENT = "invalid-argument",
+    DEADLINE_EXCEEDED = "deadline-exceeded",
+    NOT_FOUND = "not-found",
+    ALREADY_EXISTS = "already-exists",
+    PERMISSION_DENIED = "permission-denied",
+    RESOURCE_EXHAUSTED = "resource-exhausted",
+    FAILED_PRECONDITION = "failed-precondition",
+    ABORTED = "aborted",
+    OUT_OF_RANGE = "out-of-range",
+    UNIMPLEMENTED = "unimplemented",
+    INTERNAL = "internal",
+    UNAVAILABLE = "unavailable",
+    DATA_LOSS = "data-loss",
+    UNAUTHENTICATED = "unauthenticated"
 }
 
 class FavoriteRestaurantsRepository {
@@ -29,7 +29,6 @@ class FavoriteRestaurantsRepository {
         try {
             await favoriteRestaurantsDataSource.addFavoriteRestaurantId({ userId, restaurantId });
         } catch (error) {
-            console.log(error);
             throw this.handleFirestoreError(error);
         }
     }
@@ -54,9 +53,9 @@ class FavoriteRestaurantsRepository {
         const firebaseError = error as { code: string; message: string };
         switch (firebaseError.code) {
             case FirestoreErrorCode.ALREADY_EXISTS:
-                return new AlreadyExistsError(firebaseError.message);
+                return new FavoriteAlreadyExistsError(firebaseError.message);
             case FirestoreErrorCode.NOT_FOUND:
-                return new NotFoundError(firebaseError.message);
+                return new FavoriteNotFoundError(firebaseError.message);
             case FirestoreErrorCode.PERMISSION_DENIED:
                 return new PermissionDeniedError(firebaseError.message);
             case FirestoreErrorCode.UNAUTHENTICATED:

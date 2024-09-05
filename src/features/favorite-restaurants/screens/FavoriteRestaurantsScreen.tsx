@@ -6,30 +6,28 @@ import { getFavoriteRestaurants } from "../redux";
 import { RestaurantCard } from "@components";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+// Modified FavoriteRestaurantsScreen with testIDs
 const FavoriteRestaurantsScreen = () => {
     const dispatch = useDispatch<AppDispatch>();
 
-    // Get the state from Redux
     const { favoriteRestaurantSummaryList, loading, error } = useSelector((state: RootState) => state.favoriteRestaurants);
 
-    // Fetch favorite restaurants when the screen is loaded
     useEffect(() => {
         dispatch(getFavoriteRestaurants());
     }, [dispatch]);
 
-    // Empty Indicator Component
     const EmptyIndicator = () => (
-        <View style={styles.emptyContainer}>
+        <View style={styles.emptyContainer} testID="emptyIndicator">
             <Text style={styles.emptyText}>You have no favorite restaurants yet!</Text>
         </View>
     );
 
     return (
-        <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Your Favorite Flavors</Text>
+        <SafeAreaView style={styles.container} testID="favoriteRestaurantsScreen">
+            <Text style={styles.title} testID="screenTitle">Your Favorite Flavors</Text>
 
-            {loading && <ActivityIndicator style={styles.emptyContainer} />}
-            {error && <Text style={styles.errorText}>{error}</Text>}
+            {loading && <ActivityIndicator style={styles.emptyContainer} testID="loadingIndicator" />}
+            {error && <Text style={styles.errorText} testID="errorMessage">{error}</Text>}
 
             {!loading && !error && (
                 <>
@@ -42,8 +40,9 @@ const FavoriteRestaurantsScreen = () => {
                             renderItem={({ item }) => (
                                 <RestaurantCard key={item.id} restaurant={item} />
                             )}
+                            testID="restaurantCardList"
                             keyExtractor={(item) => item.id}
-                            contentContainerStyle={styles.listContentContainer}  // Ensures the list fills available space
+                            contentContainerStyle={styles.listContentContainer}
                         />
                     )}
                 </>

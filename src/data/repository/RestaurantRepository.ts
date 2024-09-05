@@ -1,5 +1,5 @@
 import { restaurantDataSource } from "../data-source";
-import { NoRestaurantSummaryListFoundError, RestaurantSummaryListFetchFailureError, EmptyResultError, DataSourceError, DataSourceRequestError, RestaurantId, RestaurantDetails, RestaurantSummaryList, RestaurantSummary } from "@models";
+import { EmptyResultError, DataSourceError, DataSourceRequestError, RestaurantId, RestaurantDetails, RestaurantSummaryList, RestaurantSummary, RestaurantSummaryFetchError, NoRestaurantSummariesFoundError, NoRestaurantDetailsFoundError, RestaurantDetailsFetchError } from "@models";
 
 class RestaurantRepository {
     async getRestaurantSummaryList({ location, limit, offset }: { location: string, limit: number, offset: number }): Promise<RestaurantSummaryList> {
@@ -9,13 +9,13 @@ class RestaurantRepository {
             return restaurantSummaryList;
         } catch (error) {
             if (error instanceof DataSourceError) {
-                if (error instanceof EmptyResultError) throw new NoRestaurantSummaryListFoundError()
+                if (error instanceof EmptyResultError) throw new NoRestaurantSummariesFoundError()
                 if (error instanceof DataSourceRequestError) {
                     const message = error.customMessage;
                     if (message)
-                        throw new RestaurantSummaryListFetchFailureError(message);
+                        throw new RestaurantSummaryFetchError(message);
                 }
-                throw new RestaurantSummaryListFetchFailureError();
+                throw new RestaurantSummaryFetchError();
             }
             throw error;
         }
@@ -28,13 +28,13 @@ class RestaurantRepository {
             return restaurantSummary
         } catch (error) {
             if (error instanceof DataSourceError) {
-                if (error instanceof EmptyResultError) throw new NoRestaurantSummaryListFoundError()
+                if (error instanceof EmptyResultError) throw new NoRestaurantSummariesFoundError()
                 if (error instanceof DataSourceRequestError) {
                     const message = error.customMessage;
                     if (message)
-                        throw new RestaurantSummaryListFetchFailureError(message);
+                        throw new RestaurantSummaryFetchError(message);
                 }
-                throw new RestaurantSummaryListFetchFailureError();
+                throw new RestaurantSummaryFetchError();
             }
             throw error;
         }
@@ -49,13 +49,13 @@ class RestaurantRepository {
             return restaurantDetails;
         } catch (error) {
             if (error instanceof DataSourceError) {
-                if (error instanceof EmptyResultError) throw new NoRestaurantSummaryListFoundError()
+                if (error instanceof EmptyResultError) throw new NoRestaurantDetailsFoundError()
                 if (error instanceof DataSourceRequestError) {
                     const message = error.customMessage;
                     if (message)
-                        throw new RestaurantSummaryListFetchFailureError(message);
+                        throw new RestaurantDetailsFetchError(message);
                 }
-                throw new RestaurantSummaryListFetchFailureError();
+                throw new RestaurantDetailsFetchError();
             }
             throw error;
         }
