@@ -4,9 +4,9 @@ import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { AuthScreen, registerUser, signInAnonymously } from '@features';
 import { NavigationContainer } from '@react-navigation/native';
-import { componentsTestIds } from './utils';
+import { componentsTestIds } from '../utils';
 
-jest.mock('../src/features/authentication/redux/authReducer', () => ({
+jest.mock('../../src/features/authentication/redux/authReducer', () => ({
     loginUser: jest.fn(),
     registerUser: jest.fn(),
     signInAnonymously: jest.fn(),

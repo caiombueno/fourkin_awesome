@@ -7,6 +7,7 @@ import { FavoriteButton, initializeAuthListener, selectCurrentUser, selectRestau
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 import { AppNavigationParams, appRoutes } from '@navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator<AppNavigationParams>();
 

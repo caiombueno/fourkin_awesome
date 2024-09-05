@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { BottomTabNavigationOptions, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from '@expo/vector-icons';
 import React, { useMemo } from "react";
 import { MainTabParamList, MainTabRoute, mainTabRoutes } from "../routes/mainTabRoutes";
@@ -21,7 +21,9 @@ const MainTabNavigator: React.FC = () => {
                         return <Ionicons name={currentRoute.ioniconName} size={size} color={color} />;
                     },
                     headerShown: false,
-                };
+                    tabBarAllowFontScaling: true,
+
+                } as BottomTabNavigationOptions;
             }}
         >
             {

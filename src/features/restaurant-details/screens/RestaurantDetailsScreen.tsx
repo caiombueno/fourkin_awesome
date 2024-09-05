@@ -1,6 +1,5 @@
 import { Text, ScrollView, View, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
 import React from 'react';
-import { RestaurantId } from '@models';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@redux';
 import { getRestaurantDetails, selectRestaurantDetails } from '../redux';

@@ -16,7 +16,7 @@ jest.mock('firebase/auth', () => ({
     currentUser: null,
 }));
 
-jest.mock('../firebaseConfig', () => ({
+jest.mock('../../../firebaseConfig', () => ({
     auth: {
         currentUser: null,
     },

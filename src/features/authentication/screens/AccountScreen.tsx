@@ -1,11 +1,12 @@
 import React from 'react';
-import { SafeAreaView, Text, Button, StyleSheet, View, Alert } from 'react-native';
+import { Text, Button, StyleSheet, View, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@redux'; // Assuming these are your store types
 import { logoutUser, selectCurrentUser } from '../redux'; // Assuming this is your logout action
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AppNavigationParams } from '@navigation'; // Your navigation params
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type AuthScreenNavigationProp = StackNavigationProp<AppNavigationParams, 'Auth'>;
 

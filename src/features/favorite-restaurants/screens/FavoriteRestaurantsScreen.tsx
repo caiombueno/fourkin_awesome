@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { SafeAreaView, Text, FlatList, ActivityIndicator, StyleSheet, View } from "react-native";
+import { Text, FlatList, ActivityIndicator, StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux";
 import { getFavoriteRestaurants } from "../redux";
 import { RestaurantCard } from "@components";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const FavoriteRestaurantsScreen = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -53,13 +54,10 @@ const FavoriteRestaurantsScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, // Allow the container to take the full available space\
-        paddingHorizontal: 16,
-        paddingTop: 20,
-        backgroundColor: '#F5F5F5',
+        flex: 1,
     },
     title: {
-        fontSize: 20,
+        fontSize: 18,
         padding: 10,
     },
     errorText: {

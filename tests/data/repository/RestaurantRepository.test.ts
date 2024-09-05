@@ -13,7 +13,7 @@ import {
 
 
 // Mock the restaurantDataSource
-jest.mock('../../src/data/data-source');
+jest.mock('../../../src/data/data-source');
 
 describe('RestaurantRepository', () => {
     let restaurantRepository: RestaurantRepository;

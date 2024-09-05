@@ -1,5 +1,5 @@
 import { restaurantRepository } from "@data";
-import { RestaurantSummaryListSerializable, RestaurantSummarySerializable } from "@models";
+import { RestaurantSummaryListSerializable } from "@models";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const getRestaurantSummaryList = createAsyncThunk(
@@ -11,9 +11,6 @@ const getRestaurantSummaryList = createAsyncThunk(
 
             return { data: serializedRestaurantSummaryList, offset };
         } catch (error) {
-            if (error instanceof Error) {
-                console.error(error.message);
-            }
             throw error;
         }
     }

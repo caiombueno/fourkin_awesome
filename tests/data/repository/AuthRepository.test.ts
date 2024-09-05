@@ -3,7 +3,7 @@
 import { authDataSource, AuthErrorCode, authRepository, AuthRepository, EmailCredentials, User } from "@data";
 import { EmailAlreadyInUseError, InternalError, NetworkRequestFailedError, OperationNotAllowedError, TooManyRequestsError, UserDisabledError, UserNotFoundError, UserTokenExpiredError, WeakPasswordError, WrongPasswordError } from "@models";
 
-jest.mock('../src/data/data-source/AuthDataSource/AuthDataSource', () => ({
+jest.mock('../../../src/data/data-source/AuthDataSource/AuthDataSource', () => ({
     authDataSource: {
         login: jest.fn(),
         register: jest.fn(),

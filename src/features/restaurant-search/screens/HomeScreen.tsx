@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { SafeAreaView, Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import { EmptyLocationIndicator, RestaurantCardListView, TextField } from '../components';
 import { selectLocationSearchInput, setLocationInput } from '../redux';
 import { useDispatch } from 'react-redux';
 import { LocationPermissionStatus, LocationService } from '../services';
 import { AppDispatch } from '@redux';
-import { selectCurrentUser } from '../../authentication';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const HomeScreen: React.FC = () => {
     const location = selectLocationSearchInput();
@@ -62,10 +62,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     inputContainer: {
-        // marginBottom: 10, // Provide some spacing below the input field
+        marginBottom: 10, // Provide some spacing below the input field
     },
     restaurantListView: {
-        // flex: 1, // Ensure this fills the remaining space
+        flexGrow: 1, // Allow the list to grow as needed
     },
     emptyStateContainer: {
         flex: 1,
