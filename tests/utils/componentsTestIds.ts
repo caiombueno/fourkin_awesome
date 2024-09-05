@@ -11,5 +11,15 @@ export const componentsTestIds = {
         ErrorIndicator: 'RestaurantDetailsScreen.ErrorIndicator',
         RestaurantDetailsView: 'RestaurantDetailsView',
     },
+    AuthScreen: {
+        authTitle: 'authTitle',
+        emailInput: 'emailInput',
+        passwordInput: 'passwordInput',
+        authButton: 'authButton',
+        switchButton: 'switchButton',
+        anonymousButton: 'anonymousButton',
+        successMessage: 'successMessage',
+        errorMessage: 'errorMessage',
+    }
 
 };
