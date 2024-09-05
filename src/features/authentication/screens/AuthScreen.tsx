@@ -1,5 +1,5 @@
 import { AppDispatch, RootState } from '@redux';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, registerUser, selectCurrentUser, signInAnonymously } from '../redux';
@@ -22,7 +22,9 @@ const AuthScreen = () => {
     const user = selectCurrentUser();
     const { loading, error } = useSelector((state: RootState) => state.auth);
 
-    if (user) goToBottomTabs();
+    useEffect(() => {
+        if (user) goToBottomTabs();
+    }, [user, goToBottomTabs]);
 
 
     const [email, setEmail] = useState<string>('');

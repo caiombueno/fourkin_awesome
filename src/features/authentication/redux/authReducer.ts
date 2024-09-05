@@ -80,8 +80,6 @@ const logoutUser = createAsyncThunk<void, void, { rejectValue: string }>(
     }
 );
 
-console.log(initialState.user);
-
 // Auth slice with state management
 const authSlice = createSlice({
     name: 'auth',

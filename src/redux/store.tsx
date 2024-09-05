@@ -1,14 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { authReducer, currentUserReducer, restaurantSummaryListReducer, restaurantSummaryListSearchInputReducer } from '@features';
+import { authReducer, currentUserReducer, favoriteRestaurantsReducer, restaurantSummaryListReducer, restaurantSummaryListSearchInputReducer } from '@features';
 import { restaurantDetailsReducer } from 'features/restaurant-details/redux/restaurantDetailsReducer';
-
-
-const loggerMiddleware = (store: any) => (next: any) => (action: any) => {
-    // console.log('Dispatching:', action);
-    let result = next(action);
-    // console.log('Next state:', store.getState());
-    return result;
-};
 
 const store = configureStore({
     reducer: {
@@ -17,9 +9,8 @@ const store = configureStore({
         restaurantDetails: restaurantDetailsReducer,
         auth: authReducer,
         currentUser: currentUserReducer,
+        favoriteRestaurants: favoriteRestaurantsReducer,
     },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(loggerMiddleware),
 });
 
 export default store;
