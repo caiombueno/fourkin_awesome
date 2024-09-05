@@ -1,14 +1,14 @@
 import { authRepository } from '@data';
-import { loginUser, registerUser, logoutUser } from '@features';
+import { loginUser, registerUser, logoutUser, signInAnonymously } from '@features';
 import configureMockStore from 'redux-mock-store';
 import { thunk } from 'redux-thunk';
-import { AnyAction } from 'redux';
 
 jest.mock('@data', () => ({
     authRepository: {
         loginUser: jest.fn(),
         registerUser: jest.fn(),
         logoutUser: jest.fn(),
+        signInAnonymously: jest.fn(),
     },
 }));
 
@@ -90,6 +90,46 @@ describe('registerUser async thunk', () => {
         expect(actions[0].type).toEqual(registerUser.pending.type);
         expect(actions[1].type).toEqual(registerUser.rejected.type);
         expect(actions[1].payload).toEqual('Email already in use');
+    });
+});
+
+
+
+describe('signInAnonymously async thunk', () => {
+    let store: ReturnType<typeof mockStore>;
+
+    beforeEach(() => {
+        store = mockStore({});
+    });
+
+    const mockUser = { uid: 'anonymousUserId', email: null, displayName: null };
+
+    it('dispatches fulfilled action with anonymous user data when sign in is successful', async () => {
+        // Arrange
+        (authRepository.signInAnonymously as jest.Mock).mockResolvedValueOnce(mockUser);
+
+        // Act
+        await store.dispatch<any>(signInAnonymously());
+
+        // Assert
+        const actions = store.getActions();
+        expect(actions[0].type).toEqual(signInAnonymously.pending.type);
+        expect(actions[1].type).toEqual(signInAnonymously.fulfilled.type);
+        expect(actions[1].payload).toEqual(mockUser);
+    });
+
+    it('dispatches rejected action with error message when sign in fails', async () => {
+        // Arrange
+        (authRepository.signInAnonymously as jest.Mock).mockRejectedValueOnce(new Error('Anonymous sign in failed'));
+
+        // Act
+        await store.dispatch<any>(signInAnonymously());
+
+        // Assert
+        const actions = store.getActions();
+        expect(actions[0].type).toEqual(signInAnonymously.pending.type);
+        expect(actions[1].type).toEqual(signInAnonymously.rejected.type);
+        expect(actions[1].payload).toEqual('Anonymous sign in failed');
     });
 });
 

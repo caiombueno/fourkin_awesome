@@ -56,6 +56,24 @@ const registerUser = createAsyncThunk<
     }
 );
 
+const signInAnonymously = createAsyncThunk<
+    { uid: string; email: null; displayName: null }, // Anonymous users do not have an email or display name
+    void, // No input parameters are needed for anonymous sign-in
+    { rejectValue: string }
+>(
+    'auth/signInAnonymously',
+    async (_, { rejectWithValue }) => {
+        try {
+            const userCredential = await authRepository.signInAnonymously();
+            const { uid } = userCredential; // Extract only the UID for anonymous users
+            return { uid, email: null, displayName: null }; // Return the UID and null values for email and displayName
+        } catch (error) {
+            return rejectWithValue((error as { message: string }).message);
+        }
+    }
+);
+
+
 const logoutUser = createAsyncThunk<void, void, { rejectValue: string }>(
     'auth/logout',
     async (_, { rejectWithValue }) => {
@@ -100,6 +118,19 @@ const authSlice = createSlice({
                 state.loading = false;
                 state.error = typeof action.payload === 'string' ? action.payload : 'Unknown error';
             })
+            // Sign in anonymously actions
+            .addCase(signInAnonymously.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(signInAnonymously.fulfilled, (state, action: PayloadAction<User>) => {
+                state.loading = false;
+                state.user = action.payload;
+                state.error = null;
+            })
+            .addCase(signInAnonymously.rejected, (state, action) => {
+                state.loading = false;
+                state.error = typeof action.payload === 'string' ? action.payload : 'Unknown error';
+            })
             // Logout actions
             .addCase(logoutUser.fulfilled, (state) => {
                 state.user = null;
@@ -110,4 +141,4 @@ const authSlice = createSlice({
 
 const authReducer = authSlice.reducer;
 
-export { authReducer, loginUser, registerUser, logoutUser, AuthState, User };
+export { authReducer, loginUser, registerUser, logoutUser, signInAnonymously, AuthState, User };

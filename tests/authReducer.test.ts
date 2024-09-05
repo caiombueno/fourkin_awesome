@@ -1,4 +1,4 @@
-import { authReducer, loginUser, logoutUser, registerUser, User } from "@features";
+import { authReducer, loginUser, logoutUser, registerUser, User, signInAnonymously } from "@features";
 
 describe('authReducer', () => {
     const initialState = {
@@ -44,6 +44,7 @@ describe('loginUser Thunk', () => {
     it('should set user and stop loading when loginUser.fulfilled is dispatched', () => {
         // Arrange
         const user: User = {
+            uid: 'testUserId',
             email: 'test@example.com',
         };
         const action = {
@@ -107,6 +108,7 @@ describe('registerUser Thunk', () => {
     it('should set user and stop loading when registerUser.fulfilled is dispatched', () => {
         // Arrange
         const user: User = {
+            uid: 'newUserId',
             email: 'newuser@example.com',
         };
         const action = {
@@ -145,12 +147,76 @@ describe('registerUser Thunk', () => {
     });
 });
 
+describe('signInAnonymously Thunk', () => {
+    const initialState = {
+        user: null,
+        loading: false,
+        error: null,
+    };
+
+    it('should set loading to true when signInAnonymously.pending is dispatched', () => {
+        // Arrange
+        const action = { type: signInAnonymously.pending.type };
+
+        // Act
+        const state = authReducer(initialState, action);
+
+        // Assert
+        expect(state).toEqual({
+            ...initialState,
+            loading: true,
+            error: null,
+        });
+    });
+
+    it('should set user and stop loading when signInAnonymously.fulfilled is dispatched', () => {
+        // Arrange
+        const user: User = {
+            uid: 'anonymousUserId',
+            email: null,
+        };
+        const action = {
+            type: signInAnonymously.fulfilled.type,
+            payload: user,
+        };
+
+        // Act
+        const state = authReducer(initialState, action);
+
+        // Assert
+        expect(state).toEqual({
+            ...initialState,
+            user,
+            loading: false,
+            error: null,
+        });
+    });
+
+    it('should set error and stop loading when signInAnonymously.rejected is dispatched', () => {
+        // Arrange
+        const action = {
+            type: signInAnonymously.rejected.type,
+            payload: 'Network error',
+        };
+
+        // Act
+        const state = authReducer(initialState, action);
+
+        // Assert
+        expect(state).toEqual({
+            ...initialState,
+            loading: false,
+            error: 'Network error',
+        });
+    });
+});
+
 describe('logoutUser Thunk', () => {
     it('should clear the user and reset error when logoutUser.fulfilled is dispatched', () => {
         // Arrange
         const action = { type: logoutUser.fulfilled.type };
         const stateWithUser = {
-            user: { email: 'test@example.com' },
+            user: { uid: 'testUserId', email: 'test@example.com' },
             loading: false,
             error: null,
         };
