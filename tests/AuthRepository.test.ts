@@ -1,6 +1,6 @@
 // authRepository.test.ts
 
-import { authDataSource, AuthErrorCode, authRepository, AuthRepository, EmailCredentials } from "@data";
+import { authDataSource, AuthErrorCode, authRepository, AuthRepository, EmailCredentials, User } from "@data";
 import { EmailAlreadyInUseError, InternalError, NetworkRequestFailedError, OperationNotAllowedError, TooManyRequestsError, UserDisabledError, UserNotFoundError, UserTokenExpiredError, WeakPasswordError, WrongPasswordError } from "@models";
 
 jest.mock('../src/data/data-source/AuthDataSource/AuthDataSource', () => ({
@@ -8,7 +8,8 @@ jest.mock('../src/data/data-source/AuthDataSource/AuthDataSource', () => ({
         login: jest.fn(),
         register: jest.fn(),
         logout: jest.fn(),
-        signInAnonymously: jest.fn()
+        signInAnonymously: jest.fn(),
+        get currentUser() { return null; }
     }
 }));
 
@@ -216,6 +217,38 @@ describe('AuthRepository', () => {
 
             // Act & Assert
             await expectSignInAnonymouslyToThrow(InternalError);
+        });
+    });
+
+    describe('currentUser', () => {
+        const mockUser: User = { email: 'test@example.com', uid: 'testUid' };
+
+        it('should return the current user if a user is logged in', () => {
+            // Arrange
+            Object.defineProperty(authDataSource, 'currentUser', {
+                get: jest.fn(() => mockUser),
+            });
+
+            // Act
+            const currentUser = authRepository.currentUser;
+
+            // Assert
+            expect(currentUser).toEqual(mockUser);
+            expect(authDataSource.currentUser).toBeDefined();
+        });
+
+        it('should return null if no user is logged in', () => {
+            // Arrange
+            Object.defineProperty(authDataSource, 'currentUser', {
+                get: jest.fn(() => null),
+            });
+
+            // Act
+            const currentUser = authRepository.currentUser;
+
+            // Assert
+            expect(currentUser).toBeNull();
+            expect(authDataSource.currentUser).toBeDefined();
         });
     });
 });

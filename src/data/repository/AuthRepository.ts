@@ -1,6 +1,6 @@
 
 import { EmailAlreadyInUseError, InternalError, NetworkRequestFailedError, OperationNotAllowedError, TooManyRequestsError, UserDisabledError, UserNotFoundError, UserTokenExpiredError, WeakPasswordError, WrongPasswordError } from "@models";
-import { authDataSource, EmailCredentials } from "../data-source";
+import { authDataSource, EmailCredentials, User } from "../data-source";
 
 //* https://firebase.google.com/docs/reference/js/auth#autherrorcodes
 
@@ -29,21 +29,7 @@ class AuthRepository {
             return userCredential.user;
         } catch (error) {
             const firebaseError = error as { code: string; message: string };
-
-            switch (firebaseError.code) {
-                case AuthErrorCode.USER_NOT_FOUND:
-                    throw new UserNotFoundError();
-                case AuthErrorCode.WRONG_PASSWORD:
-                    throw new WrongPasswordError();
-                case AuthErrorCode.USER_DISABLED:
-                    throw new UserDisabledError();
-                case AuthErrorCode.TOO_MANY_REQUESTS:
-                    throw new TooManyRequestsError();
-                case AuthErrorCode.NETWORK_REQUEST_FAILED:
-                    throw new NetworkRequestFailedError();
-                default:
-                    throw new InternalError(firebaseError.message);
-            }
+            throw this.handleFirebaseError(firebaseError);
         }
     }
 
@@ -53,19 +39,7 @@ class AuthRepository {
             return userCredential.user;
         } catch (error) {
             const firebaseError = error as { code: string; message: string };
-
-            switch (firebaseError.code) {
-                case AuthErrorCode.EMAIL_ALREADY_IN_USE:
-                    throw new EmailAlreadyInUseError();
-                case AuthErrorCode.WEAK_PASSWORD:
-                    throw new WeakPasswordError();
-                case AuthErrorCode.OPERATION_NOT_ALLOWED:
-                    throw new OperationNotAllowedError();
-                case AuthErrorCode.NETWORK_REQUEST_FAILED:
-                    throw new NetworkRequestFailedError();
-                default:
-                    throw new InternalError(firebaseError.message);
-            }
+            throw this.handleFirebaseError(firebaseError);
         }
     }
 
@@ -75,7 +49,6 @@ class AuthRepository {
         } catch (error) {
             const message = (error as { message: string }).message;
             throw new InternalError(message);
-
         }
     }
 
@@ -85,15 +58,39 @@ class AuthRepository {
             return userCredential.user;
         } catch (error) {
             const firebaseError = error as { code: string; message: string };
+            throw this.handleFirebaseError(firebaseError);
+        }
+    }
 
-            switch (firebaseError.code) {
-                case AuthErrorCode.TOO_MANY_REQUESTS:
-                    throw new TooManyRequestsError();
-                case AuthErrorCode.NETWORK_REQUEST_FAILED:
-                    throw new NetworkRequestFailedError();
-                default:
-                    throw new InternalError(firebaseError.message);
-            }
+
+    get currentUser(): User | null {
+        return authDataSource.currentUser;
+    }
+
+    onAuthStateChanged(callback: (user: User | null) => void) {
+        return authDataSource.onAuthStateChanged(callback);
+    }
+
+    private handleFirebaseError(error: { code: string; message: string }) {
+        switch (error.code) {
+            case AuthErrorCode.USER_NOT_FOUND:
+                return new UserNotFoundError();
+            case AuthErrorCode.WRONG_PASSWORD:
+                return new WrongPasswordError();
+            case AuthErrorCode.EMAIL_ALREADY_IN_USE:
+                return new EmailAlreadyInUseError();
+            case AuthErrorCode.WEAK_PASSWORD:
+                return new WeakPasswordError();
+            case AuthErrorCode.USER_DISABLED:
+                return new UserDisabledError();
+            case AuthErrorCode.TOO_MANY_REQUESTS:
+                return new TooManyRequestsError();
+            case AuthErrorCode.NETWORK_REQUEST_FAILED:
+                return new NetworkRequestFailedError();
+            case AuthErrorCode.OPERATION_NOT_ALLOWED:
+                return new OperationNotAllowedError();
+            default:
+                return new InternalError(error.message);
         }
     }
 }
