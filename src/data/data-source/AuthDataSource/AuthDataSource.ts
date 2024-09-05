@@ -1,29 +1,13 @@
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInAnonymously, UserCredential, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@firebaseConfig'; // Your Firebase config file
+import { User } from '@models';
 
 interface EmailCredentials {
     email: string;
     password: string;
 }
 
-interface User {
-    uid: string;
-    email: string | null;
-}
-
 class AuthDataSource {
-    constructor() {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // User is signed in, and Firebase has persisted the session
-                console.log('User is already signed in: ', user);
-            } else {
-                // No user is signed in, or session hasn't persisted
-                console.log('No user found');
-            }
-        });
-    }
-
     async login({ email, password }: EmailCredentials) {
         return await signInWithEmailAndPassword(auth, email, password);
     }
@@ -41,9 +25,7 @@ class AuthDataSource {
     }
 
     get currentUser(): User | null {
-        const user = auth.currentUser;
-        console.log(user);
-        return user;
+        return auth.currentUser;
     }
 
     onAuthStateChanged(callback: (user: User | null) => void): () => void {

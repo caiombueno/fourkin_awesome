@@ -57,6 +57,10 @@ jest.mock('firebase/auth', () => ({
     onAuthStateChanged: jest.fn(),
 }));
 
+jest.mock('firebase/firestore', () => ({
+    getFirestore: jest.fn(),
+}));
+
 jest.mock('@react-native-async-storage/async-storage', () => ({
     default: {
         getItem: jest.fn(),

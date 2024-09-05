@@ -52,14 +52,35 @@ query GetRestaurantDetails($id: String) {
       }
 `;
 
+const GET_RESTAURANT_SUMMARY: DocumentNode = gql`
+query GetRestaurantSummary($id: String) {
+        business(id: $id) {
+          id
+        name
+        price
+        rating
+        photos
+        categories {
+          title
+        }
+        hours {
+          is_open_now
+				}
+        }
+}
+
+`;
+
 interface RestaurantDataSourceQueryDocuments {
   getRestaurantSummaryList: DocumentNode;
   getRestaurantDetails: DocumentNode;
+  getRestaurantSummary: DocumentNode;
 };
 
 const queries: RestaurantDataSourceQueryDocuments = {
   getRestaurantSummaryList: GET_RESTAURANT_SUMMARY_LIST_QUERY,
   getRestaurantDetails: GET_RESTAURANT_DETAILS_QUERY,
+  getRestaurantSummary: GET_RESTAURANT_SUMMARY,
 };
 
 export default queries;

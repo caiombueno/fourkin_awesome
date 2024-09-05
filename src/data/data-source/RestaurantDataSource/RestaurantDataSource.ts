@@ -1,7 +1,7 @@
 import { ApolloError, ApolloQueryResult, NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import Constants from 'expo-constants';
-import { DataSourceRequestError, EmptyResultError, RestaurantDetails, RestaurantDetailsJson, RestaurantId, RestaurantSummary, RestaurantSummaryJson, RestaurantSummaryList, RestaurantSummaryListJson } from '../../models';
+import { DataSourceRequestError, EmptyResultError, RestaurantDetails, RestaurantDetailsJson, RestaurantId, RestaurantSummary, RestaurantSummaryJson, RestaurantSummaryList, RestaurantSummaryListJson } from '../../../models';
 import queries from './queries';
 
 class RestaurantDataSource {
@@ -26,12 +26,10 @@ class RestaurantDataSource {
   }
 
   async getRestaurantSummaryList({ location, limit, offset }: { location: string, limit: number, offset: number }): Promise<RestaurantSummaryList> {
-    console.log(location, limit, offset);
     const result: ApolloQueryResult<RestaurantSummaryListJson> = await this.client.query({
       query: queries.getRestaurantSummaryList,
       variables: { location, limit, offset },
     }).catch((error) => {
-      console.log(error);
       const message = (error instanceof ApolloError) ? error.message : null;
       throw new DataSourceRequestError(message)
     });
@@ -48,6 +46,28 @@ class RestaurantDataSource {
 
     return restaurantSummaries;
 
+  }
+
+  async getRestaurantSummary({ id }: { id: RestaurantId }): Promise<RestaurantSummary> {
+
+    const result: ApolloQueryResult<{ business: RestaurantSummaryJson }> = await this.client.query({
+      query: queries.getRestaurantSummary,
+      variables: { id },
+    }).catch((error) => {
+      const message = (error instanceof ApolloError) ? error.message : null;
+      throw new DataSourceRequestError(message)
+    });
+
+    if (result.error || (result.errors && result.errors.length > 0)) {
+      throw new DataSourceRequestError();
+    }
+    if (!result.data) throw new EmptyResultError();
+
+    const restaurantSummaryJson: RestaurantSummaryJson = result.data?.business;
+
+    const restaurantSummary = RestaurantSummary.fromJson(restaurantSummaryJson);
+
+    return restaurantSummary;
   }
 
   async getRestaurantDetails({ id }: { id: RestaurantId }): Promise<RestaurantDetails> {

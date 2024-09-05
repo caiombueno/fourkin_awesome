@@ -117,3 +117,28 @@ export class RequiresRecentLoginError extends AuthenticationError {
         super(message, code);
     }
 }
+
+// Favorite Restaurant-related Errors
+export class AlreadyExistsError extends DomainError {
+    constructor(message: string = 'The favorite restaurant already exists', code: string = 'ALREADY_EXISTS') {
+        super(message, code);
+    }
+}
+
+export class NotFoundError extends DomainError {
+    constructor(message: string = 'The favorite restaurant was not found', code: string = 'NOT_FOUND') {
+        super(message, code);
+    }
+}
+
+export class PermissionDeniedError extends DomainError {
+    constructor(message: string = 'Permission denied to access or modify favorite restaurants', code: string = 'PERMISSION_DENIED') {
+        super(message, code);
+    }
+}
+
+export class UnauthenticatedError extends DomainError {
+    constructor(message: string = 'User is not authenticated', code: string = 'UNAUTHENTICATED') {
+        super(message, code);
+    }
+}
