@@ -1,5 +1,5 @@
-import { AuthDataSource } from '@data';  // Adjust the path based on your project structure
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInAnonymously } from 'firebase/auth';
+import { AuthDataSource, User } from '@data';  // Adjust the path based on your project structure
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@firebaseConfig'; // Import the actual mock for auth
 
 // Mock Firebase auth functions
@@ -12,6 +12,14 @@ jest.mock('firebase/auth', () => ({
         currentUser: { email: 'test@example.com' },
     })),
     getReactNativePersistence: jest.fn(),
+    onAuthStateChanged: jest.fn(),
+    currentUser: null,
+}));
+
+jest.mock('../firebaseConfig', () => ({
+    auth: {
+        currentUser: null,
+    },
 }));
 
 describe('AuthDataSource', () => {
@@ -69,5 +77,29 @@ describe('AuthDataSource', () => {
         // Assert
         expect(signInAnonymously).toHaveBeenCalled(); // No arguments expected
         expect(result.user.uid).toEqual('anonymousUserId');
+    });
+
+    // Test for the currentUser property
+    it('should return the current user', () => {
+        // Arrange
+        const mockCurrentUser = { email: 'test@example.com', uid: '12345' } as User;
+        (auth as any).currentUser = mockCurrentUser;
+
+        // Act
+        const currentUser = authDataSource.currentUser;
+
+        // Assert
+        expect(currentUser).toEqual(mockCurrentUser);
+    });
+
+    it('should return null if no user is signed in', () => {
+        // Arrange
+        (auth as any).currentUser = null;
+
+        // Act
+        const currentUser = authDataSource.currentUser;
+
+        // Assert
+        expect(currentUser).toBeNull();
     });
 });
