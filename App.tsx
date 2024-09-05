@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import React, { ReactNode, useEffect } from 'react';
 import { Provider, useDispatch } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { initializeAuthListener, selectCurrentUser, selectRestaurantDetails } from '@features';
+import { FavoriteButton, initializeAuthListener, selectCurrentUser, selectRestaurantDetails } from '@features';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 import { AppNavigationParams, appRoutes } from '@navigation';
@@ -26,8 +26,6 @@ const AppNavigationContainer: React.FC<{ children?: ReactNode }> = ({ children }
   const dispatch = useDispatch<AppDispatch>();
   const user = selectCurrentUser(); // Access the user from Redux state
   const restaurantDetails = selectRestaurantDetails().data;
-
-  console.log('user', user);
 
   // Start listening for auth changes when the app loads
   useEffect(() => {
@@ -54,6 +52,11 @@ const AppNavigationContainer: React.FC<{ children?: ReactNode }> = ({ children }
             title: restaurantDetails?.name ?? '',
             headerBackTitleVisible: false,
             headerTintColor: 'black',
+            headerRight: () => (
+              <FavoriteButton
+                restaurantId={restaurantDetails?.id ?? ''}
+              />
+            ),
           }}
         />
       </Stack.Navigator>
