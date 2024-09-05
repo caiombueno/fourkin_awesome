@@ -1,3 +1,5 @@
+import { signInAnonymously } from "firebase/auth";
+
 jest.mock('expo-constants', () => ({
     expoConfig: {
         extra: {
@@ -49,6 +51,7 @@ jest.mock('firebase/auth', () => ({
     signOut: jest.fn(),
     initializeAuth: jest.fn(),
     getReactNativePersistence: jest.fn(),
+    signInAnonymously: jest.fn(),
 }));
 
 jest.mock('@react-native-async-storage/async-storage', () => ({

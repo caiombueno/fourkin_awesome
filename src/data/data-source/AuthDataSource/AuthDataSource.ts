@@ -1,5 +1,4 @@
-// AuthDataSource.js
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInAnonymously } from 'firebase/auth';
 import { auth } from '@firebaseConfig'; // Your Firebase config file
 
 interface EmailCredentials {
@@ -18,6 +17,10 @@ class AuthDataSource {
 
     async logout() {
         return await signOut(auth);
+    }
+
+    async signInAnonymously() {
+        return await signInAnonymously(auth);
     }
 }
 
