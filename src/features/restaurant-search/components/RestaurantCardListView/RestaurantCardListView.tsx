@@ -1,5 +1,5 @@
 import { ActivityIndicator, FlatList, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
-import { RestaurantCard } from "./RestaurantCard";
+import { RestaurantCard } from "@components";
 import { Text } from 'react-native';
 import { useEffect } from "react";
 import { AppDispatch } from "@redux";
@@ -22,8 +22,6 @@ const RestaurantCardListView: React.FC<{
 
     const loadMoreRestaurants = () => {
         if (hasMore && !loading) {
-            console.log('Loading more restaurants...');
-            console.log(location);
             dispatch(getRestaurantSummaryList({ location, limit, offset: offset + limit }));
         }
     };

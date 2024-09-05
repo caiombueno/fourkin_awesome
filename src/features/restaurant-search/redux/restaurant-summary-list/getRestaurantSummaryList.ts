@@ -7,13 +7,12 @@ const getRestaurantSummaryList = createAsyncThunk(
     async ({ location, offset, limit }: { location: string, offset: number, limit: number }): Promise<{ data: RestaurantSummaryListSerializable, offset: number }> => {
         try {
             const restaurantSummaryList = await restaurantRepository.getRestaurantSummaryList({ location, limit, offset });
-            console.log(restaurantSummaryList);
             const serializedRestaurantSummaryList = restaurantSummaryList.toSerializable();
 
             return { data: serializedRestaurantSummaryList, offset };
         } catch (error) {
             if (error instanceof Error) {
-                console.log(error.message);
+                console.error(error.message);
             }
             throw error;
         }

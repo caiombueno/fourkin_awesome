@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { RestaurantId, RestaurantSummarySerializable } from '@models';
-import { Row } from '@components';
+import Row from '../Row';
 import RestaurantCardImage from './RestaurantCardImage';
 import { RestaurantCardInfoView } from './RestaurantCardInfoView';
 import { AppNavigationParams } from '@navigation';

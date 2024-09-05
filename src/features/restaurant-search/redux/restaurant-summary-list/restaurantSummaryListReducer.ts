@@ -31,7 +31,6 @@ const restaurantSummaryListSlice = createSlice({
 
                 const restaurantSummaryList = action.payload.data;
                 state.data = [...state.data, ...restaurantSummaryList.restaurantSummaries];
-                console.log(state.data.length);
                 state.offset = action.payload.offset;
                 // If the returned data length is less than the limit, it means there's no more data to load
                 // state.hasMore = action.payload.data.length === action.payload.offset;

@@ -37,7 +37,7 @@ const HomeScreen: React.FC = () => {
 const HomeScreenHeader: React.FC<{ location: string, setLocationInput: (location: string) => void }> = ({ location, setLocationInput }) => {
     return (
         <View testID='HomeScreenHeader' style={styles.headerContainer}>
-            <Text style={styles.greeting}>This is Fourkin Awesome!</Text>
+            <Text style={styles.greeting}>This is Fourkin Awesome! 🍽️</Text>
             <View style={styles.inputContainer}>
                 <TextField
                     key={location}
