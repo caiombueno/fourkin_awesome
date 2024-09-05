@@ -2,7 +2,7 @@ import { AppDispatch, RootState } from '@redux';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, registerUser, signInAnonymously } from '../redux';
+import { loginUser, registerUser, selectCurrentUser, signInAnonymously } from '../redux';
 import { Button, TextInput } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -19,7 +19,11 @@ const useNavigateToBottomTabs = () => {
 const AuthScreen = () => {
     const dispatch = useDispatch<AppDispatch>();
     const goToBottomTabs = useNavigateToBottomTabs();
-    const { user, loading, error } = useSelector((state: RootState) => state.auth);
+    const user = selectCurrentUser();
+    const { loading, error } = useSelector((state: RootState) => state.auth);
+
+    if (user) goToBottomTabs();
+
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -36,12 +40,6 @@ const AuthScreen = () => {
     const handleAnonymousSignIn = () => {
         dispatch(signInAnonymously());
     };
-
-    useEffect(() => {
-        if (user) {
-            goToBottomTabs();
-        }
-    }, [user, goToBottomTabs]);
 
     return (
         <KeyboardAvoidingView

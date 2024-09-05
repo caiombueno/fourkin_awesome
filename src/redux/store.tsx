@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { authReducer, restaurantSummaryListReducer, restaurantSummaryListSearchInputReducer } from '@features';
+import { authReducer, currentUserReducer, restaurantSummaryListReducer, restaurantSummaryListSearchInputReducer } from '@features';
 import { restaurantDetailsReducer } from 'features/restaurant-details/redux/restaurantDetailsReducer';
 
 
@@ -16,6 +16,7 @@ const store = configureStore({
         restaurantSummaryListSearchInput: restaurantSummaryListSearchInputReducer,
         restaurantDetails: restaurantDetailsReducer,
         auth: authReducer,
+        currentUser: currentUserReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(loggerMiddleware),

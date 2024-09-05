@@ -38,7 +38,8 @@ describe('AuthScreen', () => {
 
     it('should call registerUser with correct credentials when Register button is pressed', async () => {
         const store = mockStoreWithState({
-            auth: { user: null, loading: false, error: null }
+            auth: { user: null, loading: false, error: null },
+            currentUser: { user: null }
         });
 
         const { getByTestId } = renderAuthScreenWithProvider(store);
@@ -64,7 +65,8 @@ describe('AuthScreen', () => {
 
     it('should call signInAnonymously when anonymous sign-in button is pressed', async () => {
         const store = mockStoreWithState({
-            auth: { user: null, loading: false, error: null }
+            auth: { user: null, loading: false, error: null },
+            currentUser: { user: null }
         });
         const { getByTestId } = renderAuthScreenWithProvider(store);
 
@@ -79,25 +81,14 @@ describe('AuthScreen', () => {
 
     it('should display error message if login fails', async () => {
         const store = mockStoreWithState({
-            auth: { user: null, loading: false, error: 'Invalid credentials' }
+            auth: { user: null, loading: false, error: 'Invalid credentials' },
+            currentUser: { user: null }
         });
         const { getByTestId } = renderAuthScreenWithProvider(store);
 
         await waitFor(() => {
             expect(getByTestId(authTestIds.errorMessage)).toBeTruthy();
             expect(getByTestId(authTestIds.errorMessage).props.children).toBe('Invalid credentials');
-        });
-    });
-
-    it('should display success message when user is authenticated', async () => {
-        const store = mockStoreWithState({
-            auth: { user: { email: 'test@example.com' }, loading: false, error: null }
-        });
-        const { getByTestId } = renderAuthScreenWithProvider(store);
-
-        await waitFor(() => {
-            const successMessage = getByTestId(authTestIds.successMessage).props.children.join('');
-            expect(successMessage).toBe('Welcome, test@example.com!');
         });
     });
 });

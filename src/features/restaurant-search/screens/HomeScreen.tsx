@@ -35,10 +35,9 @@ const HomeScreen: React.FC = () => {
 };
 
 const HomeScreenHeader: React.FC<{ location: string, setLocationInput: (location: string) => void }> = ({ location, setLocationInput }) => {
-    const user = selectCurrentUser()?.email;
     return (
         <View testID='HomeScreenHeader' style={styles.headerContainer}>
-            <Text style={styles.greeting}>Hello, {user}!</Text>
+            <Text style={styles.greeting}>This is Fourkin Awesome!</Text>
             <View style={styles.inputContainer}>
                 <TextField
                     key={location}

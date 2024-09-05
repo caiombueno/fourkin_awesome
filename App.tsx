@@ -1,9 +1,9 @@
-import { store } from '@redux';
+import { AppDispatch, store } from '@redux';
 import { NavigationContainer } from '@react-navigation/native';
-import React, { ReactNode } from 'react';
-import { Provider } from 'react-redux';
+import React, { ReactNode, useEffect } from 'react';
+import { Provider, useDispatch } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { selectCurrentUser, selectRestaurantDetails } from '@features';
+import { initializeAuthListener, selectCurrentUser, selectRestaurantDetails } from '@features';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 import { AppNavigationParams, appRoutes } from '@navigation';
@@ -23,8 +23,17 @@ const App: React.FC = () => {
 };
 
 const AppNavigationContainer: React.FC<{ children?: ReactNode }> = ({ children }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const user = selectCurrentUser(); // Access the user from Redux state
   const restaurantDetails = selectRestaurantDetails().data;
+
+  console.log('user', user);
+
+  // Start listening for auth changes when the app loads
+  useEffect(() => {
+    dispatch(initializeAuthListener());
+  }, [dispatch]);
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={user ? appRoutes.MainTabs.name : appRoutes.Auth.name}>

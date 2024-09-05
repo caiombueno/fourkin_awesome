@@ -1,13 +1,8 @@
-import { authRepository } from '@data';
+import { authRepository, User } from '@data';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 
 // Define the types for user and state
-interface User {
-    uid: string;
-    email: string | null;
-}
-
 interface AuthState {
     user: User | null;
     loading: boolean;
@@ -84,6 +79,8 @@ const logoutUser = createAsyncThunk<void, void, { rejectValue: string }>(
         }
     }
 );
+
+console.log(initialState.user);
 
 // Auth slice with state management
 const authSlice = createSlice({
