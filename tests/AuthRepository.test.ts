@@ -8,6 +8,7 @@ jest.mock('../src/data/data-source/AuthDataSource/AuthDataSource', () => ({
         login: jest.fn(),
         register: jest.fn(),
         logout: jest.fn(),
+        signInAnonymously: jest.fn()
     }
 }));
 
@@ -165,6 +166,56 @@ describe('AuthRepository', () => {
 
             // Act & Assert
             await expect(authRepository.logoutUser()).rejects.toThrow(InternalError);
+        });
+    });
+
+    describe('signInAnonymously', () => {
+        it('should sign in a user anonymously', async () => {
+            // Arrange
+            const mockUser = { uid: 'anonymousUserId' };
+            (authDataSource.signInAnonymously as jest.Mock<any>).mockResolvedValue({ user: mockUser });
+
+            // Act
+            const user = await authRepository.signInAnonymously();
+
+            // Assert
+            expect(user).toEqual(mockUser);
+            expect(authDataSource.signInAnonymously).toHaveBeenCalled();
+        });
+
+        const mockSignInAnonymouslyRejectedValue = (error: { code: string }) => {
+            (authDataSource.signInAnonymously as jest.Mock).mockRejectedValue(error);
+        };
+
+        const expectSignInAnonymouslyToThrow = async (error?: string | jest.Constructable | RegExp | Error) => {
+            await expect(authRepository.signInAnonymously()).rejects.toThrow(error);
+        };
+
+        it('should throw TooManyRequestsError if too many requests are made', async () => {
+            // Arrange
+            const error = { code: AuthErrorCode.TOO_MANY_REQUESTS };
+            mockSignInAnonymouslyRejectedValue(error);
+
+            // Act & Assert
+            await expectSignInAnonymouslyToThrow(TooManyRequestsError);
+        });
+
+        it('should throw NetworkRequestFailedError on network issues', async () => {
+            // Arrange
+            const error = { code: AuthErrorCode.NETWORK_REQUEST_FAILED };
+            mockSignInAnonymouslyRejectedValue(error);
+
+            // Act & Assert
+            await expectSignInAnonymouslyToThrow(NetworkRequestFailedError);
+        });
+
+        it('should throw InternalError on unknown errors', async () => {
+            // Arrange
+            const error = { code: 'auth/unknown-error', message: 'Unknown error occurred' };
+            mockSignInAnonymouslyRejectedValue(error);
+
+            // Act & Assert
+            await expectSignInAnonymouslyToThrow(InternalError);
         });
     });
 });

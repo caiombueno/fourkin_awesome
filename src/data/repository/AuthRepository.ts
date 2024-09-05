@@ -78,6 +78,24 @@ class AuthRepository {
 
         }
     }
+
+    async signInAnonymously() {
+        try {
+            const userCredential = await authDataSource.signInAnonymously();
+            return userCredential.user;
+        } catch (error) {
+            const firebaseError = error as { code: string; message: string };
+
+            switch (firebaseError.code) {
+                case AuthErrorCode.TOO_MANY_REQUESTS:
+                    throw new TooManyRequestsError();
+                case AuthErrorCode.NETWORK_REQUEST_FAILED:
+                    throw new NetworkRequestFailedError();
+                default:
+                    throw new InternalError(firebaseError.message);
+            }
+        }
+    }
 }
 
 const authRepository = new AuthRepository();
