@@ -1,6 +1,5 @@
 import { ApolloError, ApolloQueryResult, NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
-import Constants from 'expo-constants';
 import { DataSourceRequestError, EmptyResultError, RestaurantDetails, RestaurantDetailsJson, RestaurantId, RestaurantSummary, RestaurantSummaryJson, RestaurantSummaryList, RestaurantSummaryListJson } from '../../../models';
 import queries from './queries';
 
@@ -11,12 +10,11 @@ class RestaurantDataSource {
     if (client) {
       this.client = client;
     } else {
-      const apiToken: string = Constants.expoConfig?.extra?.yelpApiToken;
       this.client = new ApolloClient({
         uri: 'https://api.yelp.com/v3/graphql',
         cache: new InMemoryCache(),
         headers: {
-          'Authorization': `Bearer ${apiToken}`,
+          'Authorization': `Bearer ${process.env.EXPO_PUBLIC_YELP_API_TOKEN}`,
           'Content-Type': 'application/json',
           'Accept-Language': 'en_US',
           'x-requested-with': 'XMLHttpRequest',

@@ -1,22 +1,19 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { favoriteRestaurantsManager } from '@data';
-import { RestaurantId, RestaurantSummaryList, RestaurantSummaryListSerializable } from '@models';
+import { RestaurantId, RestaurantSummaryListSerializable } from '@models';
 
-// Define the state interface
 interface FavoriteRestaurantsState {
     favoriteRestaurantSummaryList: RestaurantSummaryListSerializable | null;
     loading: boolean;
     error: string | null;
 }
 
-// Initial state
 const initialState: FavoriteRestaurantsState = {
     favoriteRestaurantSummaryList: null,
     loading: false,
     error: null,
 };
 
-// Thunk to add a favorite restaurant
 const addFavoriteRestaurant = createAsyncThunk<void, RestaurantId, { rejectValue: string }>(
     'favorites/addFavoriteRestaurant',
     async (restaurantId, { rejectWithValue }) => {
@@ -31,7 +28,6 @@ const addFavoriteRestaurant = createAsyncThunk<void, RestaurantId, { rejectValue
     }
 );
 
-// Thunk to remove a favorite restaurant
 const removeFavoriteRestaurant = createAsyncThunk<void, RestaurantId, { rejectValue: string }>(
     'favorites/removeFavoriteRestaurant',
     async (restaurantId, { rejectWithValue }) => {
@@ -46,7 +42,6 @@ const removeFavoriteRestaurant = createAsyncThunk<void, RestaurantId, { rejectVa
     }
 );
 
-// Thunk to get the list of favorite restaurants
 const getFavoriteRestaurants = createAsyncThunk<RestaurantSummaryListSerializable, void, { rejectValue: string }>(
     'favorites/getFavoriteRestaurants',
     async (_, { rejectWithValue }) => {
@@ -118,7 +113,6 @@ const favoriteRestaurantsSlice = createSlice({
     },
 });
 
-// Export the actions and reducer
 const favoriteRestaurantsReducer = favoriteRestaurantsSlice.reducer;
 
 export { getFavoriteRestaurants, addFavoriteRestaurant, removeFavoriteRestaurant, favoriteRestaurantsReducer, FavoriteRestaurantsState };
