@@ -35,3 +35,11 @@ yarn-error.*
 *.tsbuildinfo
 
 .vscode/
+
+.env
+
+coverage/
+
+package-lock.json
+
+.idea
